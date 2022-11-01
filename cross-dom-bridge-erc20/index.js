@@ -27,8 +27,8 @@ let ourAddr
 const setup = async () => {
   ourAddr = l1Wallet.address
   crossChainMessenger = new mantleSDK.CrossChainMessenger({
-    l1ChainId: 31337,    // Goerli value, 1 for mainnet
-    l2ChainId: 17,  // Goerli value, 10 for mainnet
+    l1ChainId: 31337,  
+    l2ChainId: 17, 
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet
   })
