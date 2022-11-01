@@ -1,0 +1,15 @@
+{
+  "name": "standard-bridge-tutorial",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "script": "node index.js"
+  },
+  "devDependencies": {
+    "ethers": "^5.4.0"
+  },
+  "dependencies": {
+    "@mantlenetworkio/sdk": "2.0.1",
+    "@openzeppelin/contracts": "^4.7.3"
+  }
+}
