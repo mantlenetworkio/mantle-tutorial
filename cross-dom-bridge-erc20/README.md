@@ -62,7 +62,7 @@ const fs = require("fs")
 The libraries we need: [`ethers`](https://docs.ethers.io/v5/), [`dotenv`](https://www.npmjs.com/package/dotenv) and the Mantlenetworkio SDK itself.
 
 ```js
-const l1bridge = process.env.L1_BRIDGE || '0x610178dA211FEF7D417bC0e6FeD39F05609AD788'
+const l1bridge = process.env.L1_BRIDGE || '0x1B0Fd9Df9c444A4CeEC9863B88e1D7Cb3db621c0'
 const l2bridge = process.env.L2_BRIDGE || '0x4200000000000000000000000000000000000010'
 const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
 ```
@@ -175,7 +175,7 @@ Wait until the allowance transaction is processed and then report the time it to
     l1ERC20.address, l2ERC20.address, oneToken)
 ```
 
-[`crossChainMessenger.depositERC20()`](https://github.com/mantlenetworkio/mantle/blob/4e2e3fe64fc0ba62a473235ec617b4ac2fefd89c/packages/sdk/src/cross-chain-messenger.ts#L986) creates and sends the deposit trasaction on L1.
+[`crossChainMessenger.depositERC20()`](https://github.com/mantlenetworkio/mantle/blob/main/packages/sdk/src/cross-chain-messenger.ts#L986) creates and sends the deposit trasaction on L1.
 
 ```js
   console.log(`Deposit transaction hash (on L1): ${response.hash}`)

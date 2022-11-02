@@ -10,7 +10,7 @@ const L2StandardERC20 = JSON.parse(fs.readFileSync("L2StandardERC20.json"))
 const factory__L1_ERC20 = new ethers.ContractFactory(L1TestERC20.abi, L1TestERC20.bytecode)
 const factory__L2_ERC20 = new ethers.ContractFactory(L2StandardERC20.abi, L2StandardERC20.bytecode)
 
-const l1bridge = process.env.L1_BRIDGE || '0x610178dA211FEF7D417bC0e6FeD39F05609AD788'
+const l1bridge = process.env.L1_BRIDGE || '0x1B0Fd9Df9c444A4CeEC9863B88e1D7Cb3db621c0'
 const l2bridge = process.env.L2_BRIDGE || '0x4200000000000000000000000000000000000010'
 const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
 
