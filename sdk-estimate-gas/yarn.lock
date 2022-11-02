@@ -367,10 +367,10 @@
     chai "^4.3.4"
     ethers "^5.6.8"
 
-"@mantlenetworkio/sdk@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.npmmirror.com/@mantlenetworkio/sdk/-/sdk-2.0.1.tgz#517c545793af1f3de90e5140bc352b451d3d79bf"
-  integrity sha512-UoZ3LTWVS+FAU7FFk1+RE1W0Es4JnZE8elY4SNIBnwVl2OKILF8cf5GqZ34lMJToN0lrNHs24ZkZbHkcZWtvfA==
+"@mantlenetworkio/sdk@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@mantlenetworkio/sdk/-/sdk-2.0.2.tgz#11d71f74edebabf5efe12d2eac62753c6aec5434"
+  integrity sha512-ePR1cxs+bKOpMSzEnSpDMOjV0l1YDlgC0uzN5VmrIkwGX429YRua253DLWKax+6za2NSlj8DcwdO20Bag8IvKA==
   dependencies:
     "@mantlenetworkio/contracts" "2.0.0"
     "@mantlenetworkio/core-utils" "0.0.1"
