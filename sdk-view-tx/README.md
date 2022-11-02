@@ -1,17 +1,13 @@
 # View transactions between layers
 
-This tutorial teaches you how to use [the Optimism SDK](https://sdk.optimism.io/) to view the transactions passed between L1 (Ethereum) and L2 (Optimism) by an address.
-
-
-
+This tutorial teaches you how to use the Mantlenetworkio SDK to view the transactions passed between L1 and L2 by an address.
 
 ## Prerequisites
 
 [The node script](./index.js) makes these assumptions:
 
 1. You have [Node.js](https://nodejs.org/en/) running on your computer, as well as [yarn](https://classic.yarnpkg.com/lang/en/).
-1. Access to L1 (Ethereum mainnet) and L2 (Optimism) providers.
-
+1. Access to L1 and L2 providers.
 
 ## Running the script
 
@@ -21,12 +17,10 @@ This tutorial teaches you how to use [the Optimism SDK](https://sdk.optimism.io/
    yarn
    ```
 
-1. Copy `.env.example` to `.env` and specify the URLs for L1 
-
 1. Use Node to run the script
 
    ```sh
-   node view-tx.js
+   yarn script
    ```
 
 ### Results
@@ -35,20 +29,15 @@ Here are the expected results.
 Note that by the time you read this there might be additional transactions reported.
 
 ```
-Deposits by address 0xBCf86Fd70a0183433763ab0c14E7a760194f3a9F
-tx:0xa35a3085e025e2addd59c5ef2a2e5529be5141522c3cce78a1b137f2eb992d19
-	Amount: 0.01 ETH
-	Relayed: true
+Deposits by address 0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f
+tx:0x3979f14c8e890aec790fa3743c2d7ae736b48aebfc9dc990e84b77cfaf744525
+        Amount: 1 L1EPT
+        Relayed: true
 
-
-
-Withdrawals by address 0xBCf86Fd70a0183433763ab0c14E7a760194f3a9F
-tx:0x7826399958c6bb3831ef0b02b658e7e3e69f334e20e27a3c14d7caae545c3d0d
-	Amount: 1 DAI
-	Relayed: false
-tx:0xd9fd11fd12a58d9115afa2ad677745b1f7f5bbafab2142ae2cede61f80e90e8a
-	Amount: 0.001 ETH
-	Relayed: true
+Withdrawals by address 0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f
+tx:0xe650064362f163a394d3123e20029ed1b03846a6ae62e4cc8e962482c9cd4814
+        Amount: 1 L1EPT
+        Relayed: false
 ```
 
 ## How does it work?
@@ -58,36 +47,27 @@ In this section we go over the script line by line to learn how to use the SDK t
 ```js
 #! /usr/local/bin/node
 
-// View transfers between L1 and L2 using the Optimism SDK
-
 const ethers = require("ethers")
-const optimismSDK = require("@eth-optimism/sdk")
-require('dotenv').config()
-
-const network = "mainnet"    // "mainnet" or "goerli"
+const mantleSDK = require("@mantlenetworkio/sdk")
 ```
-
-If you decide to use Goerli you'll need to specify appropriate (Goerli and Optimism Goerli) provider URLs in `.env`.
 
 ```js
 // Global variable because we need them almost everywhere
 let crossChainMessenger
 
-
-const setup = async() => {
-  crossChainMessenger = new optimismSDK.CrossChainMessenger({
-      l1ChainId: network === "goerli" ? 5 : 1,    
-      l2ChainId: network === "goerli" ? 420 : 10,      
-      l1SignerOrProvider: new ethers.providers.JsonRpcProvider(process.env.L1URL),
-      l2SignerOrProvider: new ethers.providers.JsonRpcProvider(process.env.L2URL)
+const setup = async () => {
+  crossChainMessenger = new mantleSDK.CrossChainMessenger({
+    l1ChainId: 31337,
+    l2ChainId: 17,
+    l1SignerOrProvider: l1Wallet,
+    l2SignerOrProvider: l2Wallet
   })
-}    // setup
+}
 ```
 
-Create the [`CrossChainMessenger`](https://sdk.optimism.io/classes/crosschainmessenger) object that we use to view information.
+Create the `CrossChainMessenger` object that we use to view information.
 Note that we do not need signers here, since what we are only calling `view` functions.
 However, we do need the chainId values.
-
 
 ```js
 // Only the part of the ABI we need to get the symbol
@@ -106,9 +86,7 @@ const ERC20ABI = [
     "stateMutability": "view",
     "type": "function"
   }
-]     // ERC20ABI
-
-
+]
 
 const getSymbol = async l1Addr => {
   if (l1Addr == '0x0000000000000000000000000000000000000000')
@@ -125,55 +103,41 @@ If `l1Addr` is all zeroes, it means the transfer was ETH.
 Otherwise, ask the contract (we could have used the L1 or the L2) what is the correct symbol.
 
 ```js
-}   // getSymbol
-
-
-
-// Describe a cross domain transaction, either deposit or withdrawal
 const describeTx = async tx => {
   console.log(`tx:${tx.transactionHash}`)
   // Assume all tokens have decimals = 18
-  console.log(`\tAmount: ${tx.amount/1e18} ${await getSymbol(tx.l1Token)}`)
-  console.log(`\tRelayed: ${await crossChainMessenger.getMessageStatus(tx.transactionHash)  
-                              == optimismSDK.MessageStatus.RELAYED}`)
+  console.log(`\tAmount: ${tx.amount / 1e18} ${await getSymbol(tx.l1Token)}`)
+  console.log(`\tRelayed: ${await crossChainMessenger.getMessageStatus(tx.transactionHash)
+    == mantleSDK.MessageStatus.RELAYED}`)
+}
 ```
 
-The result of [`crossDomainMessenger.getMessageStatus`](https://sdk.optimism.io/classes/crosschainmessenger#getMessageStatus) is [a `MessageStatus` enumerated value](https://sdk.optimism.io/enums/messagestatus).
+The result of `crossDomainMessenger.getMessageStatus()`is a `MessageStatus` enumerated value.
 In this case we only care whether the deposit/withdrawal is still in process or if it is done.
 
 ```js
-}  // describeTx
-
-
 const main = async () => {    
     await setup()
-
-    // The address we trace
-    const addr = "0xBCf86Fd70a0183433763ab0c14E7a760194f3a9F"
-
-    const deposits = await crossChainMessenger.getDepositsByAddress(addr)
+    const deposits = await crossChainMessenger.getDepositsByAddress(l1Wallet.address)
 ```
 
-[The `crossChainMessenger.getDepositsByAddress` function](https://sdk.optimism.io/classes/crosschainmessenger#getDepositsByAddress) gives us all the deposits by an address.
+The `crossChainMessenger.getDepositsByAddress()` function gives us all the deposits by an address.
 
 ```js
     console.log(`Deposits by address ${addr}`)
     for (var i=0; i<deposits.length; i++)
       await describeTx(deposits[i])
 
-    const withdrawals = await crossChainMessenger.getWithdrawalsByAddress(addr)
+    const withdrawals = await crossChainMessenger.getWithdrawalsByAddress(l1Wallet.address)
 ```
 
-[The `crossChainMessenger.getWithdrawalsByAddress` function](https://sdk.optimism.io/classes/crosschainmessenger#getWithdrawalsByAddress) gives us all the deposits by an address.
+The `crossChainMessenger.getWithdrawalsByAddress()` function gives us all the deposits by an address.
 
 ```js
     console.log(`\n\n\nWithdrawals by address ${addr}`)
     for (var i=0; i<withdrawals.length; i++)
       await describeTx(withdrawals[i])
-
-}  // main
-
-
+} 
 
 main().then(() => process.exit(0))
   .catch((error) => {
@@ -186,5 +150,4 @@ main().then(() => process.exit(0))
 ## Conclusion
 
 You should now know how to identify all the deposits and/or withdrawals done by a specific address.
-There are some additional tracing functions in [`CrossChainMessenger`](https://sdk.optimism.io/classes/crosschainmessenger), but they are very similar in operation.
-Of course, if you have any problems you can ask on [our Discord](https://discord-gateway.optimism.io/).
+There are some additional tracing functions in [`CrossChainMessenger`](https://github.com/mantlenetworkio/mantle/blob/4e2e3fe64fc0ba62a473235ec617b4ac2fefd89c/packages/sdk/src/cross-chain-messenger.ts#L58), but they are very similar in operation.

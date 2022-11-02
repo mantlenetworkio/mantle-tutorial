@@ -1,7 +1,7 @@
 {
   "name": "view-tx",
   "version": "1.0.0",
-  "main": "view-tx.js",
+  "main": "index.js",
   "license": "MIT",
   "dependencies": {
     "@mantlenetworkio/sdk": "2.0.2",
@@ -9,6 +9,6 @@
     "ethers": "^5.6.1"
   },
   "scripts": {
-    "script": "node view-tx.js"
+    "script": "node index.js"
   }  
 }

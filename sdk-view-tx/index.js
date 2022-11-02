@@ -2,7 +2,6 @@
 
 const ethers = require("ethers")
 const mantleSDK = require("@mantlenetworkio/sdk")
-require('dotenv').config()
 
 // Global variable because we need them almost everywhere
 let crossChainMessenger
@@ -67,7 +66,6 @@ const main = async () => {
     )
 
   const withdrawals = await crossChainMessenger.getWithdrawalsByAddress(l1Wallet.address)
-  console.log(withdrawals.length)
   console.log(`\n\n\nWithdrawals by address ${l1Wallet.address}`)
   for (var i = 0; i < withdrawals.length; i++)
     await describeTx(withdrawals[i]
