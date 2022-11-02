@@ -9,6 +9,6 @@
     "yarg": "^1.0.8"
   },
   "scripts": {
-    "estimate": "node gas.js"
+    "script": "node gas.js"
   }
 }
