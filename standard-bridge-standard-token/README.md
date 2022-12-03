@@ -9,7 +9,7 @@ For an L1/L2 token pair to work on the Standard Bridge the L2 token contract has
 
 ## Deploying a standard token
 
-If there is no need for custom logic on Optimism, it's easiest to use the standard token, available as the
+If there is no need for custom logic on Mantle, it's easiest to use the standard token, available as the
 [`L2StandardERC20`](https://github.com/mantlenetworkio/mantle/blob/main/packages/contracts/contracts/standards/L2StandardERC20.sol) contract as part of the `@mantlenetworkio/contracts` package. 
 
 ### Configuration

@@ -1,12 +1,9 @@
 # Estimate the costs of an Mantle (L2) transaction
 
-[![Discord](https://img.shields.io/discord/667044843901681675.svg?color=768AD4&label=discord&logo=https%3A%2F%2Fdiscordapp.com%2Fassets%2F8c9701b98ad4372b58f13fd9f65f966e.svg)](https://discord-gateway.optimism.io)
-[![Twitter Follow](https://img.shields.io/twitter/follow/optimismFND.svg?label=optimismFND&style=social)](https://twitter.com/optimismFND)
 
-
-This tutorial teaches you how to use the Optimism SDK to estimate the gas costs of L2 transactions. 
+This tutorial teaches you how to use the Mantle SDK to estimate the gas costs of L2 transactions. 
 This calculation is complicated by the fact that the major cost is the cost of writing the transaction on L1, it doesn't work to just multiply the gas used by the transaction by the gas price, the same way you would on L1. 
-[You can read the details of the calculation here](https://help.optimism.io/hc/en-us/articles/4411895794715-Transaction-fees).
+[You can read the details of the calculation here](https://github.com/mantlenetworkio/mantle).
 
 
 
@@ -34,7 +31,7 @@ This calculation is complicated by the fact that the major cost is the cost of w
 
 ### Results
 
-Here is an example of results from the main Optimism blockchain:
+Here is an example of results from the main Mantle blockchain:
 
 
 ```
@@ -150,8 +147,8 @@ const l2RpcProvider = mantleSDK.asL2Provider(
 )
 ```
 
-The function [`optimismSDK.asL2Provider`](https://sdk.optimism.io/modules.html#asL2Provider) takes a regular [Ethers.js Provider](https://docs.ethers.io/v5/api/providers/) and adds a few L2 specific functions, which are explained below.
-Because it only adds functions, an [`L2Provider`](https://sdk.optimism.io/modules.html#L2Provider) can be used anywhere you use an Ethers `Provider`.
+The function `mantleSDK.asL2Provider` takes a regular [Ethers.js Provider](https://docs.ethers.io/v5/api/providers/) and adds a few L2 specific functions, which are explained below.
+Because it only adds functions, an `L2Provider` can be used anywhere you use an Ethers `Provider`.
 
 ```js
 const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
@@ -166,7 +163,7 @@ const getEstimates = async (provider, tx) => {
     totalCost: await provider.estimateTotalGasCost(tx),
 ```
 
-[Estimate the total cost (L1+L2) of running the transaction](https://sdk.optimism.io/modules.html#estimateTotalGasCost).
+Estimate the total cost (L1+L2) of running the transaction.
 
 > :warning: This function calls `eth_estimateGas`, which runs the transaction in the node (without changing the blockchain state). 
 > This means that the account in `l2Provider` has to have enough ETH to pay for the gas cost of the transaction.
@@ -176,7 +173,7 @@ const getEstimates = async (provider, tx) => {
     l2Cost: await provider.estimateL2GasCost(tx),
 ```
 
-Estimate the two components of the cost: [L1](https://sdk.optimism.io/modules.html#estimateL1GasCost) and [L2]()https://sdk.optimism.io/modules.html#estimateL1GasCost.
+Estimate the two components of the cost: L1 and L2
 
 ```js    
     l1Gas: await provider.estimateL1Gas(tx)
@@ -184,7 +181,7 @@ Estimate the two components of the cost: [L1](https://sdk.optimism.io/modules.ht
 }    // getEstimates
 ```
 
-[Get the amount of gas we expect to use to store the transaction on L1](https://sdk.optimism.io/modules.html#estimateL1Gas).
+Get the amount of gas we expect to use to store the transaction on L1
 
 
 ### displayResults
@@ -349,7 +346,7 @@ It takes a bit of time before the change in the account's balance is processed.
 This loop lets us wait 10 times.
 
 Note that this is not the only way to wait until a transaction happens.
-You can also use [`crossDomainMessenger.waitForMessageStatus`](https://sdk.optimism.io/interfaces/icrosschainmessenger#waitForMessageStatus). 
+You can also use `crossDomainMessenger.waitForMessageStatus`. 
 
 ```js
       // Get the real information (cost, etc.) from the transaction response
@@ -357,7 +354,7 @@ You can also use [`crossDomainMessenger.waitForMessageStatus`](https://sdk.optim
       real.l1Cost = realTxResp.l1Fee 
 ```
 
-These fields are specific to Optimism transaction responses.
+These fields are specific to Mantle transaction responses.
 
 ```js
       real.l2Gas = realTxResp.gasUsed

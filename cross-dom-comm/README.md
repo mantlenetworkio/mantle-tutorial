@@ -142,14 +142,14 @@ Once the fault challenge period is over, it is necessary to claim the transactio
 1. Get the SDK (it is already in `node_modules`).
 
    ```js
-   sdk = require("@eth-optimism/sdk")
+   sdk = require("@mantlenetworkio/sdk")
    ```
 
 1. Configure a `CrossChainMessenger` object:
 
    ```js
    l1Signer = await ethers.getSigner()
-   l2Url = `https://opt-goerli.g.alchemy.com/v2/${process.env.OPTIMISM_GOERLI_ALCHEMY_KEY}`
+   l2Url = `https://opt-goerli.g.alchemy.com/v2/${process.env.MANTLE_GOERLI_ALCHEMY_KEY}`
    crossChainMessenger = new sdk.CrossChainMessenger({ 
       l1ChainId: 5,
       l2ChainId: 420,
