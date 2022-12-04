@@ -1,4 +1,4 @@
-# Bridging ETH with the Mantlenetworkio SDK
+# Bridging BIT with the Mantlenetworkio SDK
 
 This tutorial teaches you how to use the Mantlenetworkio SDK to transfer ETH between Layer 1 and Layer 2.
 
