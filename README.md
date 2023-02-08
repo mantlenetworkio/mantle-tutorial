@@ -17,10 +17,7 @@ Here, you will discover many tutorials about Mantle SDK.
 
 6. [`sdk-view-tx`](./sdk-view-tx/README.md)
 
-7. [`standard-bridge-custom-token`](./standard-bridge-custom-token/README.md)
-
-8. [`standard-bridge-standard-token`](./standard-bridge-standard-token/README.md)
-
+7. [`standard-bridge-standard-token`](./standard-bridge-standard-token/README.md)
 
 
 ## Build LOCAL ENV

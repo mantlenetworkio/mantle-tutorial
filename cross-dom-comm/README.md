@@ -44,8 +44,8 @@ This setup assumes you already have [Node.js](https://nodejs.org/en/) and [yarn]
 1. Connect the L1 and L2
 
    ```js
-   const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
-   const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
+   const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
+   const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
    const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
    const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
    ```
@@ -130,7 +130,8 @@ This setup assumes you already have [Node.js](https://nodejs.org/en/) and [yarn]
 1. Send msg to L1.
 
    ```js
-   // todo
+   response = await L2_ControlL1Greeter.setGreeting("L2 say hi to L1")
+   console.log(`Transaction hash (on L2): ${response.hash}`)
    ```
 
 
@@ -138,23 +139,22 @@ This setup assumes you already have [Node.js](https://nodejs.org/en/) and [yarn]
 
 In actual scene, the transactions from L2 to L1 are not accepted immediately, because we need to wait to make sure there are no successful challenges.In a local environment you don't have to worry,because the challenge period is 0.
 Once the fault challenge period is over, it is necessary to claim the transaction on L1. 
-<!-- 
+
 1. Get the SDK (it is already in `node_modules`).
 
    ```js
-   sdk = require("@mantlenetworkio/sdk")
+   sdk = require("@mantlenio/sdk")
    ```
 
 1. Configure a `CrossChainMessenger` object:
 
    ```js
-   l1Signer = await ethers.getSigner()
-   l2Url = `https://opt-goerli.g.alchemy.com/v2/${process.env.MANTLE_GOERLI_ALCHEMY_KEY}`
-   crossChainMessenger = new sdk.CrossChainMessenger({ 
-      l1ChainId: 5,
-      l2ChainId: 420,
-      l1SignerOrProvider: l1Signer, 
-      l2SignerOrProvider: new ethers.providers.JsonRpcProvider(l2Url)
+   addr = l1Wallet.address
+   crossChainMessenger = new mantleSDK.CrossChainMessenger({
+      l1ChainId: process.env.L1_CHAINID,
+      l2ChainId: process.env.L2_CHAINID,
+      l1SignerOrProvider: l1Wallet,
+      l2SignerOrProvider: l2Wallet
    })
    ```
 
@@ -184,20 +184,6 @@ Once the fault challenge period is over, it is necessary to claim the transactio
    rcpt = await tx.wait()
    ```
 
-1. Get the new L1 greeting. There are two ways to do that:
-
-   - [Browse to the Greeter contract on Etherscan](https://goerli.etherscan.io/address/0x7fA4D972bB15B71358da2D937E4A830A9084cf2e#readContract) and click **greet** to see the greeting.
-
-   - Run these commands in the Hardhat console connected to L1 Goerli:
-
-     ```js
-     Greeter = await ethers.getContractFactory("Greeter")
-     greeter = await Greeter.attach("0x7fA4D972bB15B71358da2D937E4A830A9084cf2e")
-     await greeter.greet()     
-     ```
- -->
- <!-- todo -->
-
 ## How it's done (in Solidity)
 
 We'll go over the L1 contract that controls Greeter on L2, [`FromL1_ControlL2Greeter.sol`](./contracts/FromL1_ControlL2Greeter.sol).
@@ -209,10 +195,10 @@ Except for addresses, the contract going the other direction, [`FromL2_ControlL1
 pragma solidity ^0.8.0;
 
 import { ICrossDomainMessenger } from 
-    "mantlenetworkio/contracts/libraries/bridge/ICrossDomainMessenger.sol";
+    "mantlenio/contracts/libraries/bridge/ICrossDomainMessenger.sol";
 ```
 
-This line imports the interface to send messages, [`ICrossDomainMessenger.sol`](https://github.com/mantlenetworkio/mantle/blob/main/packages/contracts/contracts/L1/messaging/IL1CrossDomainMessenger.sol).
+This line imports the interface to send messages, [`ICrossDomainMessenger.sol`](https://github.com/mantlenio/mantle/blob/main/packages/contracts/contracts/L1/messaging/IL1CrossDomainMessenger.sol).
 
 
 ```solidity

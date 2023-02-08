@@ -87,11 +87,11 @@ In this section we go over the relevant parts of the script.
 #! /usr/local/bin/node
 
 // Estimate the costs of an Optimistic (L2) transaction
+require('dotenv').config()
 const ethers = require("ethers")
-const mantleSDK = require("@mantlenetworkio/sdk")
+const mantleSDK = require("@mantleio/sdk")
 const fs = require("fs")
 const { spawn } = require("child_process")
-require('dotenv').config()
 ```
 
 The packages needed for the script.
@@ -141,9 +141,9 @@ To properly align these values for display, we first turn [them into strings](ht
 ### getSigner
 
 ```js
-const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
+const key = process.env.PRIV_KEY
 const l2RpcProvider = mantleSDK.asL2Provider(
-  new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
+  new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
 )
 ```
 

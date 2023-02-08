@@ -9,6 +9,8 @@
     "ethers": "^5.6.1"
   },
   "scripts": {
+    "local": "cp ../.env.local .env && node index.js && rm .env",
+    "testnet": "cp ../.env.testnet .env && node index.js && rm .env",
     "script": "node index.js"
   }  
 }

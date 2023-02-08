@@ -1,8 +1,8 @@
 #! /usr/local/bin/node
 
+require('dotenv').config()
 const ethers = require("ethers")
 const mantleSDK = require("@mantleio/sdk")
-require('dotenv').config()
 const fs = require("fs")
 const { expect } = require("chai");
 
@@ -18,14 +18,14 @@ const factory__Greeter = new ethers.ContractFactory(Greeter.abi, Greeter.bytecod
 const factory__FromL1_ControlL2Greeter = new ethers.ContractFactory(FromL1_ControlL2Greeter.abi, FromL1_ControlL2Greeter.bytecode)
 const factory__FromL2_ControlL1Greeter = new ethers.ContractFactory(FromL2_ControlL1Greeter.abi, FromL2_ControlL1Greeter.bytecode)
 
-let L1Greeter,L2Greeter
-let L1_ControlL2Greeter,L2_ControlL1Greeter
+let L1Greeter, L2Greeter
+let L1_ControlL2Greeter, L2_ControlL1Greeter
 
-const L1CDM = process.env.L1_CDM || '0x7959CF3b8ffC87Faca8aD8a1B5D95c0f58C0BEf8'
-const L2CDM = process.env.L2_CDM || '0x4200000000000000000000000000000000000007'
-const key = process.env.PRIV_KEY || 'ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
-const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
-const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
+const L1CDM = process.env.L1_CDM
+const L2CDM = process.env.L2_CDM
+const key = process.env.PRIV_KEY
+const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
+const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
 const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
 const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
 
@@ -36,8 +36,8 @@ let crossChainMessenger
 const setup = async () => {
   addr = l1Wallet.address
   crossChainMessenger = new mantleSDK.CrossChainMessenger({
-    l1ChainId: 31337,
-    l2ChainId: 17,
+    l1ChainId: process.env.L1_CHAINID,
+    l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet
   })
@@ -49,7 +49,7 @@ const setup = async () => {
   )
   await L1Greeter.deployTransaction.wait()
   console.log("L1 Greeter Contract Address: ", L1Greeter.address)
-  
+
   console.log('Deploying L2 Greeter...')
   L2Greeter = await factory__Greeter.connect(l2Wallet).deploy(
     'L2 hello',

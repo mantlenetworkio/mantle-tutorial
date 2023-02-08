@@ -1,21 +1,22 @@
 #! /usr/local/bin/node
 
+require('dotenv').config()
 const ethers = require("ethers")
 const mantleSDK = require("@mantleio/sdk")
 
 // Global variable because we need them almost everywhere
 let crossChainMessenger
 
-const key = process.env.PRIV_KEY || 'ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
-const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
-const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
+const key = process.env.PRIV_KEY
+const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
+const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
 const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
 const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
 
 const setup = async () => {
   crossChainMessenger = new mantleSDK.CrossChainMessenger({
-    l1ChainId: 31337,
-    l2ChainId: 17,
+    l1ChainId: process.env.L1_CHAINID,
+    l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet
   })
@@ -64,7 +65,7 @@ const main = async () => {
   for (var i = 0; i < deposits.length; i++)
     await describeTx(deposits[i])
 
-  const withdrawals = await crossChainMessenger.get·ByAddress(l1Wallet.address)
+  const withdrawals = await crossChainMessenger.getWithdrawalsByAddress(l1Wallet.address)
   console.log(`\n\n\nWithdrawals by address ${l1Wallet.address}`)
   for (var i = 0; i < withdrawals.length; i++)
     await describeTx(withdrawals[i])

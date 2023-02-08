@@ -10,7 +10,7 @@ For an L1/L2 token pair to work on the Standard Bridge the L2 token contract has
 ## Deploying a standard token
 
 If there is no need for custom logic on Mantle, it's easiest to use the standard token, available as the
-[`L2StandardERC20`](https://github.com/mantlenetworkio/mantle/blob/main/packages/contracts/contracts/standards/L2StandardERC20.sol) contract as part of the `@mantlenetworkio/contracts` package. 
+[`L2StandardERC20`](https://github.com/mantlenetworkio/mantle/blob/main/packages/contracts/contracts/standards/L2StandardERC20.sol) contract as part of the `@mantleio/contracts` package. 
 
 ### Configuration
 
@@ -24,7 +24,7 @@ If there is no need for custom logic on Mantle, it's easiest to use the standard
 1. Run the script:
 
    ```sh
-   yarn script
+   yarn local
    ```
 
 The script uses our token factory contract `OVM_L2StandardTokenFactory` available as a predeploy at `0x4200000000000000000000000000000000000012` to deploy a standard token on L2. 

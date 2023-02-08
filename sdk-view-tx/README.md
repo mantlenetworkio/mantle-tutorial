@@ -1,6 +1,6 @@
 # View transactions between layers
 
-This tutorial teaches you how to use the Mantlenetworkio SDK to view the transactions passed between L1 and L2 by an address.
+This tutorial teaches you how to use the Mantleio SDK to view the transactions passed between L1 and L2 by an address.
 
 ## Prerequisites
 
@@ -48,7 +48,7 @@ In this section we go over the script line by line to learn how to use the SDK t
 #! /usr/local/bin/node
 
 const ethers = require("ethers")
-const mantleSDK = require("@mantlenetworkio/sdk")
+const mantleSDK = require("@mantleio/sdk")
 ```
 
 ```js
@@ -57,8 +57,8 @@ let crossChainMessenger
 
 const setup = async () => {
   crossChainMessenger = new mantleSDK.CrossChainMessenger({
-    l1ChainId: 31337,
-    l2ChainId: 17,
+    l1ChainId: process.env.L1_CHAINID,
+    l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet
   })

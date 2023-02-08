@@ -1,21 +1,16 @@
 #! /usr/local/bin/node
-
+require('dotenv').config()
 const ethers = require("ethers")
 const mantleSDK = require("@mantleio/sdk")
 const fs = require("fs")
 
 const L1TestERC20 = JSON.parse(fs.readFileSync("TestERC20.json"))
+const l1BitAddr = process.env.L1_BIT
+const l2BitAddr = process.env.L2_BIT
+const key = process.env.PRIV_KEY
 
-const factory__L1_ERC20 = new ethers.ContractFactory(L1TestERC20.abi, L1TestERC20.bytecode)
-
-const l1BitAddr = process.env.L1_BIT || '0x9109811E8eEe02520219612bB5D47C60c382F4aa'
-const l2BitAddr = process.env.L2_BIT || '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
-// const l1bridge = process.env.L1_BRIDGE || '0x1B0Fd9Df9c444A4CeEC9863B88e1D7Cb3db621c0'
-// const l2bridge = process.env.L2_BRIDGE || '0x4200000000000000000000000000000000000010'
-const key = process.env.PRIV_KEY || 'ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
-
-const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
-const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
+const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
+const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
 const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
 const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
 
@@ -29,8 +24,8 @@ let ourAddr
 const setup = async () => {
   ourAddr = l1Wallet.address
   crossChainMessenger = new mantleSDK.CrossChainMessenger({
-    l1ChainId: 31337,
-    l2ChainId: 17,
+    l1ChainId: process.env.L1_CHAINID,
+    l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet
   })
@@ -38,44 +33,45 @@ const setup = async () => {
   l2Bit = new ethers.Contract(l2BitAddr, L1TestERC20.abi, l2Wallet)
 }
 
-const reportERC20Balances = async () => {
+const reportBalances = async () => {
   const l1Balance = (await l1Bit.balanceOf(ourAddr)).toString()
   const l2Balance = (await l2Bit.balanceOf(ourAddr)).toString()
   console.log(`Token on L1:${l1Balance}     Token on L2:${l2Balance}`)
 }
 
-const oneToken = BigInt(1e18)
+const depositToken = BigInt(1e18)
+const withdrawToken = BigInt(1e17)
 
-const depositERC20 = async () => {
+const depositBIT = async () => {
   console.log("#################### Deposit BIT ####################")
-  await reportERC20Balances()
+  await reportBalances()
   const start = new Date()
 
   // Need the l2 address to know which bridge is responsible
   const allowanceResponse = await crossChainMessenger.approveERC20(
-    l1BitAddr, l2BitAddr, oneToken)
+    l1BitAddr, l2BitAddr, depositToken)
   await allowanceResponse.wait()
   console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
 
   const response = await crossChainMessenger.depositERC20(
-    l1BitAddr, l2BitAddr, oneToken)
+    l1BitAddr, l2BitAddr, depositToken)
   console.log(`Deposit transaction hash (on L1): ${response.hash}`)
   await response.wait()
   console.log("Waiting for status to change to RELAYED")
   console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
   await crossChainMessenger.waitForMessageStatus(response.hash, mantleSDK.MessageStatus.RELAYED)
 
-  await reportERC20Balances()
+  await reportBalances()
   console.log(`depositERC20 took ${(new Date() - start) / 1000} seconds\n`)
 }
 
-const withdrawERC20 = async () => {
+const withdrawBIT = async () => {
   console.log("#################### Withdraw BIT ####################")
   const start = new Date()
-  await reportERC20Balances()
+  await reportBalances()
 
   const response = await crossChainMessenger.withdrawERC20(
-    l1BitAddr, l2BitAddr, oneToken)
+    l1BitAddr, l2BitAddr, withdrawToken)
   console.log(`Transaction hash (on L2): ${response.hash}`)
   await response.wait()
 
@@ -94,15 +90,15 @@ const withdrawERC20 = async () => {
   console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
   await crossChainMessenger.waitForMessageStatus(response,
     mantleSDK.MessageStatus.RELAYED)
-  await reportERC20Balances()
+  await reportBalances()
   console.log(`withdrawERC20 took ${(new Date() - start) / 1000} seconds\n\n\n`)
 }
 
 const main = async () => {
   await setup()
-  await reportERC20Balances()
-  await depositERC20()
-  await withdrawERC20()
+  await reportBalances()
+  await depositBIT()
+  await withdrawBIT()
 }
 
 main().then(() => process.exit(0))
