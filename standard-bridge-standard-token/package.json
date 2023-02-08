@@ -2,14 +2,17 @@
   "name": "standard-bridge-tutorial",
   "version": "1.0.0",
   "license": "MIT",
-  "scripts": {
-    "script": "node index.js"
-  },
   "devDependencies": {
     "ethers": "^5.4.0"
   },
   "dependencies": {
-    "@mantlenetworkio/sdk": "2.0.2",
+    "@mantleio/sdk": "^0.1.4",
+    "dotenv": "^16.0.0",
     "@openzeppelin/contracts": "^4.7.3"
+  },
+  "scripts": {
+    "local": "cp ../.env.local .env && node index.js && rm .env",
+    "testnet": "cp ../.env.testnet .env && node index.js && rm .env",
+    "script": "node index.js"
   }
 }

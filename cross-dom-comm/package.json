@@ -4,7 +4,7 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
-    "@mantlenetworkio/sdk": "2.0.2",
+    "@mantleio/sdk": "^0.1.4",
     "@nomiclabs/hardhat-ethers": "^2.0.6",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
@@ -18,6 +18,8 @@
     "typescript": "^4.6.4"
   },
   "scripts": {
-    "script": "node index.js"
+    "local": "cp ../.env.local .env && node index.js && rm .env",
+    "testnet": "cp ../.env.testnet .env && node index.js && rm .env",
+    "script": "hardhat compile && node index.js"
   }
 }

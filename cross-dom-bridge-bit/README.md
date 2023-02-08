@@ -1,6 +1,6 @@
-# Bridging BIT with the Mantlenetworkio SDK
+# Bridging BIT with the Mantleio SDK
 
-This tutorial teaches you how to use the Mantlenetworkio SDK to transfer ETH between Layer 1 and Layer 2.
+This tutorial teaches you how to use the mantleio SDK to transfer BIT between Layer 1 and Layer 2.
 
 ## Setup
 
@@ -22,7 +22,7 @@ This tutorial teaches you how to use the Mantlenetworkio SDK to transfer ETH bet
 
    ```sh
    git clone https://github.com/mantlenetworkio/mantle-tutorial.git
-   cd mantle-tutorial/cross-dom-bridge-eth
+   cd mantle-tutorial/cross-dom-bridge-bit
    ```
 
 1. Install the necessary packages.
@@ -36,12 +36,40 @@ This tutorial teaches you how to use the Mantlenetworkio SDK to transfer ETH bet
 The sample code is in `index.js`, execute it.
 This transaction should execute immediately after execution.
 
+### local
+If you want have test with `index.js`, you should configure the missing or changing environment variables in file `.env.local.tmp` and change the file name `.env.local.tmp` to `.env.local` then use `yarn local` to execute `index.js`. If you want have a test in our testnet network you should do the same for `.env.testnet.tmp` and then use `yarn testnet` to execute `index.js`.
+```sh
+  yarn local
+```
+
 ### Expected output
 
 When running on L1, the output from the script should be similar to:
 
 ```sh
-# todo
+Token on L1:2599100000000000000000     Token on L2:99990899999999999316126
+#################### Deposit BIT ####################
+Token on L1:2599100000000000000000     Token on L2:99990899999999999316126
+Time so far 0.086 seconds
+Deposit transaction hash (on L1): 0xd6901a5a0bf51aa1750187cddc4cd95d6be14c7019c1a99fd472758e797407fc
+Waiting for status to change to RELAYED
+Time so far 0.329 seconds
+Token on L1:2598100000000000000000     Token on L2:99991899999999999316126
+depositERC20 took 52.577 seconds
+
+#################### Withdraw BIT ####################
+Token on L1:2598100000000000000000     Token on L2:99991899999999999316126
+Transaction hash (on L2): 0x06a4548efdd5f967bdae5924cd76ea5783c2e53d67199beab76d4c23ad73c91b
+Waiting for status to change to IN_CHALLENGE_PERIOD
+Time so far 4.098 seconds
+In the challenge period, waiting for status READY_FOR_RELAY
+Time so far 4.156 seconds
+Ready for relay, finalizing message now
+Time so far 4.212 seconds
+Waiting for status to change to RELAYED
+Time so far 6.311 seconds
+Token on L1:2598200000000000000000     Token on L2:99991799999999999308455
+withdrawERC20 took 6.338 seconds
 ```
 
 ## How does it work?
@@ -51,17 +79,17 @@ When running on L1, the output from the script should be similar to:
 #! /usr/local/bin/node
 
 const ethers = require("ethers")
-const mantleSDK = require("@mantlenetworkio/sdk")
+const mantleSDK = require("@mantleio/sdk")
 const fs = require("fs")
 
 ```
 
-The libraries we need: [`ethers`](https://docs.ethers.io/v5/), [`dotenv`](https://www.npmjs.com/package/dotenv) and the Mantlenetworkio SDK itself.
+The libraries we need: [`ethers`](https://docs.ethers.io/v5/), [`dotenv`](https://www.npmjs.com/package/dotenv) and the mantleio SDK itself.
 
 ```js
-const l1bridge = process.env.L1_BRIDGE || '0x1B0Fd9Df9c444A4CeEC9863B88e1D7Cb3db621c0'
-const l2bridge = process.env.L2_BRIDGE || '0x4200000000000000000000000000000000000010'
-const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
+const l1bridge = process.env.L1_BRIDGE
+const l2bridge = process.env.L2_BRIDGE
+const key = process.env.PRIV_KEY
 ```
 
 Local default configuration
@@ -79,8 +107,8 @@ The configuration parameters required for transfers.
 Initialize the signers of L1 and L2
 
 ```js
-const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
-const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
+const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
+const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
 const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
 const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
 ```
@@ -93,8 +121,8 @@ This function sets up the parameters we need for transfers then deploy ERC20 on 
 const setup = async() => {
   ourAddr = l1Wallet.address
   crossChainMessenger = new mantleSDK.CrossChainMessenger({
-    l1ChainId: 31337, 
-    l2ChainId: 17,  
+    l1ChainId: process.env.L1_CHAINID,
+    l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet
   })
@@ -104,38 +132,33 @@ Create the CrossChainMessenger object that we use to transfer assets.
 
 ### `reportBalances`
 
-This function reports the ETH balances of the address on both layers.
+This function reports the BIT balances of the address on both layers.
 
 ```js
 const reportBalances = async () => {
-  const l1Balance = (await crossChainMessenger.l1Signer.getBalance()).toString().slice(0, -18)
-  const ETH = new ethers.Contract(l2ETH, erc20ABI, l2Wallet)
-  const l2Balance = (await ETH.balanceOf(crossChainMessenger.l2Signer.getAddress())).toString().slice(0, -18)
-
-  console.log(`On L1:${l1Balance}     On L2:${l2Balance} `)
+  const l1Balance = (await l1Bit.balanceOf(ourAddr)).toString()
+  const l2Balance = (await l2Bit.balanceOf(ourAddr)).toString()
+  console.log(`Token on L1:${l1Balance}     Token on L2:${l2Balance}`)
 }
 ```
 
-### `depositETH`
+### `depositBIT`
 
-This function shows how to deposit ETH from L1 to L2.
+This function shows how to deposit BIT from L1 to L2.
 
 ```js
-const depositETH = async () => {
-
-  console.log("Deposit ETH")
-  await reportBalances()
+const depositBIT = async () => {
+  ...
 ```
-
-To show that the deposit actually happened we show before and after balances.
 
 ```js  
   const start = new Date()
 
-  const response = await crossChainMessenger.depositETH(eth)
+  const response = await crossChainMessenger.depositERC20(
+    l1BitAddr, l2BitAddr, depositToken)
 ```
 
-`crossChainMessenger.depositETH()` creates and sends the deposit trasaction on L1.
+`crossChainMessenger.depositERC20()` creates and sends the deposit trasaction on L1.
 
 ```js
   console.log(`Transaction hash (on L1): ${response.hash}`)
@@ -155,25 +178,22 @@ To show that the deposit actually happened we need to wait until the message is 
 
 ```js
   await reportBalances()    
-  console.log(`depositETH took ${(new Date()-start)/1000} seconds\n\n`)
+  console.log(`depositBIT took ${(new Date()-start)/1000} seconds\n\n`)
 }
 ```
 
 Once the message is relayed the balance change on L2 is practically instantaneous.
 We can just report the balances and see that the L2 balance rose by 1.
 
-### `withdrawETH`
+### `withdrawBIT`
 
-This function shows how to withdraw ETH from L2 to L1.
+This function shows how to withdraw BIT from L2 to L1.
 
 ```js
-const withdrawETH = async () => { 
-  
-  console.log("Withdraw ETH")
-  const start = new Date()  
-  await reportBalances()
-
-  const response = await crossChainMessenger.withdrawERC20(ethers.constants.AddressZero, l2ETH, eth)
+const withdrawBIT = async () => { 
+  ...
+  const response = await crossChainMessenger.withdrawERC20(l1BitAddr, l2BitAddr, withdrawToken)
+  ...
 ```
 
 For deposits it was enough to transfer 1 to show that the L2 balance increases.
@@ -219,10 +239,11 @@ Finalizing the message also takes a bit of time.
 A `main` to run the setup followed by both operations.
 
 ```js
-const main = async () => {    
-    await setup()
-    await depositETH()
-    await withdrawETH() 
+const main = async () => {
+  await setup()
+  await reportBalances()
+  await depositBIT()
+  await withdrawBIT()
 }
 
 main().then(() => process.exit(0))
@@ -234,4 +255,4 @@ main().then(() => process.exit(0))
 
 ## Conclusion
 
-You should now be able to write applications that use our SDK and bridge to transfer ETH between layer 1 and layer 2. 
+You should now be able to write applications that use our SDK and bridge to transfer BIT between layer 1 and layer 2. 

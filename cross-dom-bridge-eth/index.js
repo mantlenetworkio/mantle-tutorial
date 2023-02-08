@@ -1,13 +1,12 @@
 #! /usr/local/bin/node
-
-const ethers = require("ethers")
-const mantleSDK = require("@mantlenetworkio/sdk")
 require('dotenv').config()
+const ethers = require("ethers")
+const mantleSDK = require("@mantleio/sdk")
 
-const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
-const l2ETH = process.env.L2ETH || '0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111'
-const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
-const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
+const key = process.env.PRIV_KEY
+const l2ETH = process.env.L2_ETH
+const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
+const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
 const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
 const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
 
@@ -17,14 +16,14 @@ let crossChainMessenger
 const setup = async () => {
   addr = l1Wallet.address
   crossChainMessenger = new mantleSDK.CrossChainMessenger({
-    l1ChainId: 31337,
-    l2ChainId: 17,
+    l1ChainId: process.env.L1_CHAINID,
+    l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet
   })
 }
 
-const eth = BigInt(1e18)
+const eth = BigInt(1e16)
 
 const erc20ABI = [
   {
@@ -37,9 +36,9 @@ const erc20ABI = [
 ]
 
 const reportBalances = async () => {
-  const l1Balance = (await crossChainMessenger.l1Signer.getBalance()).toString().slice(0, -18)
+  const l1Balance = (await crossChainMessenger.l1Signer.getBalance())
   const ETH = new ethers.Contract(l2ETH, erc20ABI, l2Wallet)
-  const l2Balance = (await ETH.balanceOf(crossChainMessenger.l2Signer.getAddress())).toString().slice(0, -18)
+  const l2Balance = (await ETH.balanceOf(crossChainMessenger.l2Signer.getAddress()))
 
   console.log(`On L1:${l1Balance}     On L2:${l2Balance} `)
 }

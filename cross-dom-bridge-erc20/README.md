@@ -1,7 +1,7 @@
-# Bridging ERC-20 tokens with the Mantlenetworkio SDK
+# Bridging ERC-20 tokens with the Mantleio SDK
 
 This tutorial teaches you how to use the Mantlenetwork SDK to transfer ERC-20 tokens between Layer 1 and Layer 2 .
-While you *could* use [the bridge contracts](https://github.com/mantlenetworkio/mantle/blob/main/packages/contracts/contracts/L1/messaging/L1StandardBridge.sol) directly
+While you *could* use [the bridge contracts](https://github.com/mantleio/mantle/blob/main/packages/contracts/contracts/L1/messaging/L1StandardBridge.sol) directly
 
 
 ## Setup
@@ -13,7 +13,8 @@ While you *could* use [the bridge contracts](https://github.com/mantlenetworkio/
 
 1. Start local L1 and L2.
     ```sh
-    git clone https://github.com/mantlenetworkio/mantle.git
+    git clone https://github.com/mantle
+  io/mantle.git
     cd mantle/ops
     make up
     # check status
@@ -23,7 +24,8 @@ While you *could* use [the bridge contracts](https://github.com/mantlenetworkio/
 1. Clone this repository and enter it.
 
    ```sh
-   git clone https://github.com/mantlenetworkio/mantle-tutorial.git
+   git clone https://github.com/mantle
+  io/mantle-tutorial.git
    cd mantle-tutorial/cross-dom-bridge-erc20
    ```
 
@@ -39,12 +41,47 @@ While you *could* use [the bridge contracts](https://github.com/mantlenetworkio/
 The sample code is in `index.js`, execute it.
 This transaction should execute immediately after execution.
 
+### local
+If you want have test with `index.js`, you should configure the missing or changing environment variables in file `.env.local.tmp` and change the file name `.env.local.tmp` to `.env.local` then use `yarn local` to execute `index.js`. If you want have a test in our testnet network you should do the same for `.env.testnet.tmp` and then use `yarn testnet` to execute `index.js`.
+```sh
+  yarn local
+```
+
 ### Expected output
 
 when executed locally, the output from the script should be similar to:
 
 ```sh
-# todo 
+#################### Deploy ERC20 ####################
+Deploying L1 ERC20...
+L1 ERC20 Contract ExampleToken Address:  0xCA8c8688914e0F7096c920146cd0Ad85cD7Ae8b9
+mint to  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 10000000000000000000  success
+allowance:  10000000000000000000
+Deploying L2 ERC20...
+L2 ERC20 Contract BVM_L2DepositedERC20 Address:  0x09635F643e140090A9A8Dcd712eD6285858ceBef 
+
+#################### Deposit ERC20 ####################
+Token on L1:10000000000000000000     Token on L2:0
+Time so far 0.073 seconds
+Deposit transaction hash (on L1): 0xe14fb963611c62f1294f97730b33c8e7b215368a2fe57256b9f2b1c9496f9225
+Waiting for status to change to RELAYED
+Time so far 0.308 seconds
+Token on L1:9000000000000000000     Token on L2:1000000000000000000
+depositERC20 took 48.527 seconds
+
+#################### Withdraw ERC20 ####################
+Token on L1:9000000000000000000     Token on L2:1000000000000000000
+Transaction hash (on L2): 0x4ed3fb4c7984bdcd458a3f004e265e73d06f1a3be27959f0612d2959c38841ea
+Waiting for status to change to IN_CHALLENGE_PERIOD
+Time so far 4.078 seconds
+In the challenge period, waiting for status READY_FOR_RELAY
+Time so far 4.141 seconds
+Ready for relay, finalizing message now
+Time so far 4.194 seconds
+Waiting for status to change to RELAYED
+Time so far 5.986 seconds
+Token on L1:10000000000000000000     Token on L2:0
+withdrawERC20 took 6.005 seconds
 ```
 
 ## How does it work?
@@ -54,17 +91,17 @@ when executed locally, the output from the script should be similar to:
 #! /usr/local/bin/node
 
 const ethers = require("ethers")
-const mantleSDK = require("@mantlenetworkio/sdk")
+const mantleSDK = require("@mantleio/sdk")
 const fs = require("fs")
 
 ```
 
-The libraries we need: [`ethers`](https://docs.ethers.io/v5/), [`dotenv`](https://www.npmjs.com/package/dotenv) and the Mantlenetworkio SDK itself.
+The libraries we need: [`ethers`](https://docs.ethers.io/v5/), [`dotenv`](https://www.npmjs.com/package/dotenv) and the Mantleio SDK itself.
 
 ```js
-const l1bridge = process.env.L1_BRIDGE || '0x1B0Fd9Df9c444A4CeEC9863B88e1D7Cb3db621c0'
-const l2bridge = process.env.L2_BRIDGE || '0x4200000000000000000000000000000000000010'
-const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
+const l1bridge = process.env.L1_BRIDGE
+const l2bridge = process.env.L2_BRIDGE
+const key = process.env.PRIV_KEY
 ```
 
 Local default configuration
@@ -93,8 +130,8 @@ The configuration parameters required for transfers.
 Initialize the signers of L1 and L2
 
 ```js
-const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
-const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
+const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
+const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
 const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
 const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
 ```
@@ -107,8 +144,8 @@ This function sets up the parameters we need for transfers then deploy ERC20 on 
 const setup = async() => {
   ourAddr = l1Wallet.address
   crossChainMessenger = new mantleSDK.CrossChainMessenger({
-    l1ChainId: 31337, 
-    l2ChainId: 17,  
+    l1ChainId: process.env.L1_CHAINID,
+    l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet
   })

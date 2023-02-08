@@ -1,7 +1,8 @@
 #! /usr/local/bin/node
 
+require('dotenv').config()
 const ethers = require("ethers")
-const mantleSDK = require("@mantlenetworkio/sdk")
+const mantleSDK = require("@mantleio/sdk")
 const fs = require("fs")
 
 const L1TestERC20 = JSON.parse(fs.readFileSync("L1TestERC20.json"))
@@ -10,12 +11,12 @@ const L2StandardERC20 = JSON.parse(fs.readFileSync("L2StandardERC20.json"))
 const factory__L1_ERC20 = new ethers.ContractFactory(L1TestERC20.abi, L1TestERC20.bytecode)
 const factory__L2_ERC20 = new ethers.ContractFactory(L2StandardERC20.abi, L2StandardERC20.bytecode)
 
-const l1bridge = process.env.L1_BRIDGE || '0x1B0Fd9Df9c444A4CeEC9863B88e1D7Cb3db621c0'
-const l2bridge = process.env.L2_BRIDGE || '0x4200000000000000000000000000000000000010'
-const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
+const l1bridge = process.env.L1_BRIDGE
+const l2bridge = process.env.L2_BRIDGE
+const key = process.env.PRIV_KEY
 
-const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
-const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
+const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
+const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
 const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
 const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
 
@@ -27,8 +28,8 @@ let ourAddr
 const setup = async () => {
   ourAddr = l1Wallet.address
   crossChainMessenger = new mantleSDK.CrossChainMessenger({
-    l1ChainId: 31337,  
-    l2ChainId: 17, 
+    l1ChainId: process.env.L1_CHAINID,
+    l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet
   })
@@ -65,8 +66,8 @@ const setup = async () => {
 }
 
 const reportERC20Balances = async () => {
-  const l1Balance = (await l1ERC20.balanceOf(ourAddr)).toString().slice(0, -18)
-  const l2Balance = (await l2ERC20.balanceOf(ourAddr)).toString().slice(0, -18)
+  const l1Balance = (await l1ERC20.balanceOf(ourAddr))
+  const l2Balance = (await l2ERC20.balanceOf(ourAddr))
   console.log(`Token on L1:${l1Balance}     Token on L2:${l2Balance}`)
 }
 

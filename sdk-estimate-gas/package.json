@@ -4,11 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@mantlenetworkio/sdk": "2.0.2",
-    "dotenv": "^16.0.1",
+    "@mantleio/sdk": "^0.1.4",
+    "dotenv": "^16.0.0",
     "yarg": "^1.0.8"
   },
   "scripts": {
+    "local": "cp ../.env.local .env && node gas.js && rm .env",
+    "testnet": "cp ../.env.testnet .env && node gas.js && rm .env",
     "script": "node gas.js"
   }
 }

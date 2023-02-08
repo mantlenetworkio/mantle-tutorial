@@ -4,11 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@mantlenetworkio/sdk": "2.0.2",
+    "@mantleio/sdk": "^0.1.4",
     "dotenv": "^16.0.0",
     "ethers": "^5.6.1"
   },
   "scripts": {
+    "local": "cp ../.env.local .env && node index.js && rm .env",
+    "testnet": "cp ../.env.testnet .env && node index.js && rm .env",
     "script": "node index.js"
   }  
 }

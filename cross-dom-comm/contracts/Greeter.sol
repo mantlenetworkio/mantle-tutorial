@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 // For cross domain messages' origin
-import {ICrossDomainMessenger} from "@mantlenetworkio/contracts/libraries/bridge/ICrossDomainMessenger.sol";
+import {ICrossDomainMessenger} from "@mantleio/contracts/libraries/bridge/ICrossDomainMessenger.sol";
 
 contract Greeter {
     string greeting;
@@ -28,7 +28,7 @@ contract Greeter {
         emit SetGreeting(msg.sender, tx.origin, getXorig());
     }
 
-    // Get the cross domain origin, if any
+    // Get the cross domain origin
     function getXorig() private view returns (address) {
         // If this isn't a cross domain message
         if (msg.sender != cdmAddr) return address(0);

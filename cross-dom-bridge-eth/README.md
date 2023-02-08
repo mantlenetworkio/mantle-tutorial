@@ -1,6 +1,6 @@
-# Bridging ETH with the Mantlenetworkio SDK
+# Bridging ETH with the Mantleio SDK
 
-This tutorial teaches you how to use the Mantlenetworkio SDK to transfer ETH between Layer 1 and Layer 2.
+This tutorial teaches you how to use the Mantleio SDK to transfer ETH between Layer 1 and Layer 2.
 
 ## Setup
 
@@ -36,12 +36,38 @@ This tutorial teaches you how to use the Mantlenetworkio SDK to transfer ETH bet
 The sample code is in `index.js`, execute it.
 This transaction should execute immediately after execution.
 
+### local
+If you want have test with `index.js`, you should configure the missing or changing environment variables in file `.env.local.tmp` and change the file name `.env.local.tmp` to `.env.local` then use `yarn local` to execute `index.js`. If you want have a test in our testnet network you should do the same for `.env.testnet.tmp` and then use `yarn testnet` to execute `index.js`.
+```sh
+  yarn local
+```
+
 ### Expected output
 
 When running on L1, the output from the script should be similar to:
 
 ```sh
-# todo
+Deposit ETH
+On L1:4842581276699403084203     On L2:4999499968500000000000 
+Transaction hash (on L1): 0x1252ceeb2143975c00143d392495caf8d160a6005a79a348d02de00d068e2f7c
+Waiting for status to change to RELAYED
+Time so far 0.237 seconds
+On L1:4842571065383903084203     On L2:4999509968500000000000 
+depositETH took 40.436 seconds
+
+Withdraw ETH
+On L1:4842571065383903084203     On L2:4999509968500000000000 
+Transaction hash (on L2): 0x7856ed898c90c3908550fbfbdb830012eeb48b7bb65f6e9939f8a10c138b0fb0
+Waiting for status to change to IN_CHALLENGE_PERIOD
+Time so far 4.08 seconds
+In the challenge period, waiting for status READY_FOR_RELAY
+Time so far 4.164 seconds
+Ready for relay, finalizing message now
+Time so far 4.225 seconds
+Waiting for status to change to RELAYED
+Time so far 6.043 seconds
+On L1:4842580346724903084203     On L2:4999499968500000000000 
+withdrawETH took 6.065 seconds
 ```
 
 ## How does it work?
@@ -51,17 +77,17 @@ When running on L1, the output from the script should be similar to:
 #! /usr/local/bin/node
 
 const ethers = require("ethers")
-const mantleSDK = require("@mantlenetworkio/sdk")
+const mantleSDK = require("@mantleio/sdk")
 const fs = require("fs")
 
 ```
 
-The libraries we need: [`ethers`](https://docs.ethers.io/v5/), [`dotenv`](https://www.npmjs.com/package/dotenv) and the Mantlenetworkio SDK itself.
+The libraries we need: [`ethers`](https://docs.ethers.io/v5/), [`dotenv`](https://www.npmjs.com/package/dotenv) and the Mantleio SDK itself.
 
 ```js
-const l1bridge = process.env.L1_BRIDGE || '0x1B0Fd9Df9c444A4CeEC9863B88e1D7Cb3db621c0'
-const l2bridge = process.env.L2_BRIDGE || '0x4200000000000000000000000000000000000010'
-const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
+const l1bridge = process.env.L1_BRIDGE
+const l2bridge = process.env.L2_BRIDGE
+const key = process.env.PRIV_KEY
 ```
 
 Local default configuration
@@ -79,8 +105,8 @@ The configuration parameters required for transfers.
 Initialize the signers of L1 and L2
 
 ```js
-const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
-const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
+const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
+const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
 const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
 const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
 ```
@@ -93,8 +119,8 @@ This function sets up the parameters we need for transfers then deploy ERC20 on 
 const setup = async() => {
   ourAddr = l1Wallet.address
   crossChainMessenger = new mantleSDK.CrossChainMessenger({
-    l1ChainId: 31337, 
-    l2ChainId: 17,  
+    l1ChainId: process.env.L1_CHAINID,
+    l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet
   })

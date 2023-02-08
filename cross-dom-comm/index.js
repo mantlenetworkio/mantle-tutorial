@@ -1,8 +1,8 @@
 #! /usr/local/bin/node
 
-const ethers = require("ethers")
-const mantleSDK = require("@mantlenetworkio/sdk")
 require('dotenv').config()
+const ethers = require("ethers")
+const mantleSDK = require("@mantleio/sdk")
 const fs = require("fs")
 const { expect } = require("chai");
 
@@ -18,14 +18,14 @@ const factory__Greeter = new ethers.ContractFactory(Greeter.abi, Greeter.bytecod
 const factory__FromL1_ControlL2Greeter = new ethers.ContractFactory(FromL1_ControlL2Greeter.abi, FromL1_ControlL2Greeter.bytecode)
 const factory__FromL2_ControlL1Greeter = new ethers.ContractFactory(FromL2_ControlL1Greeter.abi, FromL2_ControlL1Greeter.bytecode)
 
-let L1Greeter,L2Greeter
-let L1_ControlL2Greeter,L2_ControlL1Greeter
+let L1Greeter, L2Greeter
+let L1_ControlL2Greeter, L2_ControlL1Greeter
 
-const L1CDM = process.env.L1_CDM || '0xc48078a734c2e22D43F54B47F7a8fB314Fa5A601'
-const L2CDM = process.env.L2_CDM || '0x4200000000000000000000000000000000000007'
-const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
-const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
-const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
+const L1CDM = process.env.L1_CDM
+const L2CDM = process.env.L2_CDM
+const key = process.env.PRIV_KEY
+const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
+const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
 const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
 const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
 
@@ -36,8 +36,8 @@ let crossChainMessenger
 const setup = async () => {
   addr = l1Wallet.address
   crossChainMessenger = new mantleSDK.CrossChainMessenger({
-    l1ChainId: 31337,
-    l2ChainId: 17,
+    l1ChainId: process.env.L1_CHAINID,
+    l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet
   })
@@ -49,7 +49,7 @@ const setup = async () => {
   )
   await L1Greeter.deployTransaction.wait()
   console.log("L1 Greeter Contract Address: ", L1Greeter.address)
-  
+
   console.log('Deploying L2 Greeter...')
   L2Greeter = await factory__Greeter.connect(l2Wallet).deploy(
     'L2 hello',
@@ -104,8 +104,27 @@ const sendMsg = async () => {
   await crossChainMessenger.waitForMessageStatus(response.hash, mantleSDK.MessageStatus.RELAYED)
   console.log("After")
   await reportGreet()
-}
 
+  console.log("#################### Send Msg L2 To L1 ####################")
+  start = new Date()
+  response = await L2_ControlL1Greeter.setGreeting("L2 say hi to L1")
+  console.log(`Transaction hash (on L2): ${response.hash}`)
+  await response.wait()
+  console.log("Waiting for status to change to IN_CHALLENGE_PERIOD")
+  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
+  await crossChainMessenger.waitForMessageStatus(response.hash, mantleSDK.MessageStatus.IN_CHALLENGE_PERIOD)
+  console.log("In the challenge period, waiting for status READY_FOR_RELAY")
+  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
+  await crossChainMessenger.waitForMessageStatus(response.hash, mantleSDK.MessageStatus.READY_FOR_RELAY)
+  console.log("Ready for relay, finalizing message now")
+  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
+  await crossChainMessenger.finalizeMessage(response)
+  console.log("Waiting for status to change to RELAYED")
+  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
+  await crossChainMessenger.waitForMessageStatus(response, mantleSDK.MessageStatus.RELAYED)
+  console.log("After")
+  await reportGreet()
+}
 
 const main = async () => {
   await setup()
