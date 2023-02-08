@@ -1,7 +1,7 @@
 #! /usr/local/bin/node
 
 const ethers = require("ethers")
-const mantleSDK = require("@mantlenetworkio/sdk")
+const mantleSDK = require("@mantleio/sdk")
 require('dotenv').config()
 const fs = require("fs")
 const { expect } = require("chai");
@@ -21,9 +21,9 @@ const factory__FromL2_ControlL1Greeter = new ethers.ContractFactory(FromL2_Contr
 let L1Greeter,L2Greeter
 let L1_ControlL2Greeter,L2_ControlL1Greeter
 
-const L1CDM = process.env.L1_CDM || '0xc48078a734c2e22D43F54B47F7a8fB314Fa5A601'
+const L1CDM = process.env.L1_CDM || '0x7959CF3b8ffC87Faca8aD8a1B5D95c0f58C0BEf8'
 const L2CDM = process.env.L2_CDM || '0x4200000000000000000000000000000000000007'
-const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
+const key = process.env.PRIV_KEY || 'ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
 const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
 const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
 const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
@@ -104,8 +104,27 @@ const sendMsg = async () => {
   await crossChainMessenger.waitForMessageStatus(response.hash, mantleSDK.MessageStatus.RELAYED)
   console.log("After")
   await reportGreet()
-}
 
+  console.log("#################### Send Msg L2 To L1 ####################")
+  start = new Date()
+  response = await L2_ControlL1Greeter.setGreeting("L2 say hi to L1")
+  console.log(`Transaction hash (on L2): ${response.hash}`)
+  await response.wait()
+  console.log("Waiting for status to change to IN_CHALLENGE_PERIOD")
+  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
+  await crossChainMessenger.waitForMessageStatus(response.hash, mantleSDK.MessageStatus.IN_CHALLENGE_PERIOD)
+  console.log("In the challenge period, waiting for status READY_FOR_RELAY")
+  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
+  await crossChainMessenger.waitForMessageStatus(response.hash, mantleSDK.MessageStatus.READY_FOR_RELAY)
+  console.log("Ready for relay, finalizing message now")
+  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
+  await crossChainMessenger.finalizeMessage(response)
+  console.log("Waiting for status to change to RELAYED")
+  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
+  await crossChainMessenger.waitForMessageStatus(response, mantleSDK.MessageStatus.RELAYED)
+  console.log("After")
+  await reportGreet()
+}
 
 const main = async () => {
   await setup()

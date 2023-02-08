@@ -1,12 +1,12 @@
 #! /usr/local/bin/node
 
 const ethers = require("ethers")
-const mantleSDK = require("@mantlenetworkio/sdk")
+const mantleSDK = require("@mantleio/sdk")
 
 // Global variable because we need them almost everywhere
 let crossChainMessenger
 
-const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
+const key = process.env.PRIV_KEY || 'ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
 const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
 const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
 const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
@@ -62,14 +62,12 @@ const main = async () => {
   const deposits = await crossChainMessenger.getDepositsByAddress(l1Wallet.address)
   console.log(`Deposits by address ${l1Wallet.address}`)
   for (var i = 0; i < deposits.length; i++)
-    await describeTx(deposits[i]
-    )
+    await describeTx(deposits[i])
 
-  const withdrawals = await crossChainMessenger.getWithdrawalsByAddress(l1Wallet.address)
+  const withdrawals = await crossChainMessenger.get·ByAddress(l1Wallet.address)
   console.log(`\n\n\nWithdrawals by address ${l1Wallet.address}`)
   for (var i = 0; i < withdrawals.length; i++)
-    await describeTx(withdrawals[i]
-    )
+    await describeTx(withdrawals[i])
 }
 
 main().then(() => process.exit(0))

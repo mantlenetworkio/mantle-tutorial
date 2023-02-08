@@ -2,12 +2,12 @@
 
 // Estimate the costs of an Optimistic (L2) transaction
 const ethers = require("ethers")
-const mantleSDK = require("@mantlenetworkio/sdk")
+const mantleSDK = require("@mantleio/sdk")
 const fs = require("fs")
 const { spawn } = require("child_process")
 require('dotenv').config()
 
-const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
+const key = process.env.PRIV_KEY || 'ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
 const l2RpcProvider = mantleSDK.asL2Provider(
   new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
 )

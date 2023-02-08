@@ -1,10 +1,10 @@
 #! /usr/local/bin/node
 
 const ethers = require("ethers")
-const mantleSDK = require("@mantlenetworkio/sdk")
+const mantleSDK = require("@mantleio/sdk")
 require('dotenv').config()
 
-const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
+const key = process.env.PRIV_KEY || 'ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
 const l2ETH = process.env.L2ETH || '0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111'
 const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
 const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
@@ -37,9 +37,9 @@ const erc20ABI = [
 ]
 
 const reportBalances = async () => {
-  const l1Balance = (await crossChainMessenger.l1Signer.getBalance()).toString().slice(0, -18)
+  const l1Balance = (await crossChainMessenger.l1Signer.getBalance())
   const ETH = new ethers.Contract(l2ETH, erc20ABI, l2Wallet)
-  const l2Balance = (await ETH.balanceOf(crossChainMessenger.l2Signer.getAddress())).toString().slice(0, -18)
+  const l2Balance = (await ETH.balanceOf(crossChainMessenger.l2Signer.getAddress()))
 
   console.log(`On L1:${l1Balance}     On L2:${l2Balance} `)
 }

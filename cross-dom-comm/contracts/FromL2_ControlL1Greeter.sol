@@ -3,7 +3,7 @@
 // The greeter address is specific to Goerli.
 pragma solidity ^0.8.0;
 
-import {ICrossDomainMessenger} from "@mantlenetworkio/contracts/libraries/bridge/ICrossDomainMessenger.sol";
+import {ICrossDomainMessenger} from "@mantleio/contracts/libraries/bridge/ICrossDomainMessenger.sol";
 
 contract FromL2_ControlL1Greeter {
     address public crossDomainMessengerAddr;

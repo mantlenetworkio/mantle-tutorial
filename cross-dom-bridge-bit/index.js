@@ -1,18 +1,18 @@
 #! /usr/local/bin/node
 
 const ethers = require("ethers")
-const mantleSDK = require("@mantlenetworkio/sdk")
+const mantleSDK = require("@mantleio/sdk")
 const fs = require("fs")
 
 const L1TestERC20 = JSON.parse(fs.readFileSync("TestERC20.json"))
 
 const factory__L1_ERC20 = new ethers.ContractFactory(L1TestERC20.abi, L1TestERC20.bytecode)
 
-const l1BitAddr = process.env.L1_BIT || '0x01BDCf509fE69a87b9787d85728193bAbD5A3d25'
+const l1BitAddr = process.env.L1_BIT || '0x9109811E8eEe02520219612bB5D47C60c382F4aa'
 const l2BitAddr = process.env.L2_BIT || '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
 // const l1bridge = process.env.L1_BRIDGE || '0x1B0Fd9Df9c444A4CeEC9863B88e1D7Cb3db621c0'
 // const l2bridge = process.env.L2_BRIDGE || '0x4200000000000000000000000000000000000010'
-const key = process.env.PRIV_KEY || 'dbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97'
+const key = process.env.PRIV_KEY || 'ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
 
 const l1RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9545')
 const l2RpcProvider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
@@ -39,8 +39,8 @@ const setup = async () => {
 }
 
 const reportERC20Balances = async () => {
-  const l1Balance = (await l1Bit.balanceOf(ourAddr)).toString().slice(0, -18)
-  const l2Balance = (await l2Bit.balanceOf(ourAddr)).toString().slice(0, -18)
+  const l1Balance = (await l1Bit.balanceOf(ourAddr)).toString()
+  const l2Balance = (await l2Bit.balanceOf(ourAddr)).toString()
   console.log(`Token on L1:${l1Balance}     Token on L2:${l2Balance}`)
 }
 
@@ -100,6 +100,7 @@ const withdrawERC20 = async () => {
 
 const main = async () => {
   await setup()
+  await reportERC20Balances()
   await depositERC20()
   await withdrawERC20()
 }
