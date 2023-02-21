@@ -96,7 +96,6 @@ const withdrawBIT = async () => {
 
 const main = async () => {
   await setup()
-  await reportBalances()
   await depositBIT()
   await withdrawBIT()
 }
