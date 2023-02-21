@@ -34,8 +34,8 @@ const setup = async () => {
 }
 
 const reportBalances = async () => {
-  const l1Balance = (await l1Bit.balanceOf(ourAddr)).toString()
-  const l2Balance = (await l2Bit.balanceOf(ourAddr)).toString()
+  const l1Balance = (await l1Bit.balanceOf(ourAddr)).toString().slice(0, -18)
+  const l2Balance = (await l2Bit.balanceOf(ourAddr)).toString().slice(0, -18)
   console.log(`Token on L1:${l1Balance}     Token on L2:${l2Balance}`)
 }
 
