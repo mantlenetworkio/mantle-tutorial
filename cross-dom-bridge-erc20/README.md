@@ -1,6 +1,6 @@
 # Bridging ERC-20 tokens with the Mantleio SDK
 
-This tutorial teaches you how to use the Mantlenetwork SDK to transfer ERC-20 tokens between Layer 1 and Layer 2 .
+This tutorial teaches you how to use the Mantlenetwork SDK to transfer ERC-20 tokens between Layer 1 and Layer 2.
 While you *could* use [the bridge contracts](https://github.com/mantleio/mantle/blob/main/packages/contracts/contracts/L1/messaging/L1StandardBridge.sol) directly
 
 
