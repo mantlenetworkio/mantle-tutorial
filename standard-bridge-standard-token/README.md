@@ -31,7 +31,7 @@ The script uses our token factory contract `OVM_L2StandardTokenFactory` availabl
 
 ## Deploying a Custom Token
 
-When the `L2StandardERC20` implementation does not satisfy your requirements, we can consider allowing a custom implemetation. 
+When the `L2StandardERC20` implementation does not satisfy your requirements, we can consider allowing a custom implementation. 
 See this [tutorial on getting a custom token implemented and deployed](../standard-bridge-custom-token/README.md)
 
 ## Testing 
