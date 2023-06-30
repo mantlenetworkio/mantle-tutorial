@@ -5,7 +5,7 @@ Here, you will discover many tutorials about Mantle SDK.
 
 ## Tutorials
 
-1. [`cross-dom-bridge-bit`](./cross-dom-bridge-bit/README.md)
+1. [`cross-dom-bridge-mnt`](./cross-dom-bridge-mnt/README.md)
 
 2. [`cross-dom-bridge-erc20`](./cross-dom-bridge-erc20/README.md)
 

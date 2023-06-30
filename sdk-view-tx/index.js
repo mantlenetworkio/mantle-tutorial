@@ -44,7 +44,7 @@ const getSymbol = async l1Addr => {
   if (l1Addr == '0x0000000000000000000000000000000000000000')
     return "ETH"
   if (l1Addr == '0x1A4b46696b2bB4794Eb3D4c26f1c55F9170fa4C5')
-    return "BIT"
+    return "MNT"
   const l1Contract = new ethers.Contract(l1Addr, ERC20ABI, crossChainMessenger.l1SignerOrProvider)
   return await l1Contract.symbol()
 }

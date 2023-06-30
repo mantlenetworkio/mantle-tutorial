@@ -5,8 +5,8 @@ const mantleSDK = require("@mantleio/sdk")
 const fs = require("fs")
 
 const L1TestERC20 = JSON.parse(fs.readFileSync("TestERC20.json"))
-const l1BitAddr = process.env.L1_BIT
-const l2BitAddr = process.env.L2_BIT
+const l1MntAddr = process.env.L1_MNT
+const l2MntAddr = process.env.L2_MNT
 const key = process.env.PRIV_KEY
 
 const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
@@ -16,7 +16,7 @@ const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
 
 // Global variable because we need them almost everywhere
 let crossChainMessenger
-let l1Bit, l2Bit
+let l1Mnt, l2Mnt
 let ourAddr
 
 // Only the part of the ABI we need to get the symbol
@@ -29,32 +29,32 @@ const setup = async () => {
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet
   })
-  l1Bit = new ethers.Contract(l1BitAddr, L1TestERC20.abi, l1Wallet)
-  l2Bit = new ethers.Contract(l2BitAddr, L1TestERC20.abi, l2Wallet)
+  l1Mnt = new ethers.Contract(l1MntAddr, L1TestERC20.abi, l1Wallet)
+  l2Mnt = new ethers.Contract(l2MntAddr, L1TestERC20.abi, l2Wallet)
 }
 
 const reportBalances = async () => {
-  const l1Balance = (await l1Bit.balanceOf(ourAddr)).toString().slice(0, -18)
-  const l2Balance = (await l2Bit.balanceOf(ourAddr)).toString().slice(0, -18)
+  const l1Balance = (await l1Mnt.balanceOf(ourAddr)).toString().slice(0, -18)
+  const l2Balance = (await l2Mnt.balanceOf(ourAddr)).toString().slice(0, -18)
   console.log(`Token on L1:${l1Balance}     Token on L2:${l2Balance}`)
 }
 
 const depositToken = BigInt(1e18)
 const withdrawToken = BigInt(1e17)
 
-const depositBIT = async () => {
-  console.log("#################### Deposit BIT ####################")
+const depositMNT = async () => {
+  console.log("#################### Deposit MNT ####################")
   await reportBalances()
   const start = new Date()
 
   // Need the l2 address to know which bridge is responsible
   const allowanceResponse = await crossChainMessenger.approveERC20(
-    l1BitAddr, l2BitAddr, depositToken)
+    l1MntAddr, l2MntAddr, depositToken)
   await allowanceResponse.wait()
   console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
 
   const response = await crossChainMessenger.depositERC20(
-    l1BitAddr, l2BitAddr, depositToken)
+    l1MntAddr, l2MntAddr, depositToken)
   console.log(`Deposit transaction hash (on L1): ${response.hash}`)
   await response.wait()
   console.log("Waiting for status to change to RELAYED")
@@ -65,13 +65,13 @@ const depositBIT = async () => {
   console.log(`depositERC20 took ${(new Date() - start) / 1000} seconds\n`)
 }
 
-const withdrawBIT = async () => {
-  console.log("#################### Withdraw BIT ####################")
+const withdrawMNT = async () => {
+  console.log("#################### Withdraw MNT ####################")
   const start = new Date()
   await reportBalances()
 
   const response = await crossChainMessenger.withdrawERC20(
-    l1BitAddr, l2BitAddr, withdrawToken)
+    l1MntAddr, l2MntAddr, withdrawToken)
   console.log(`Transaction hash (on L2): ${response.hash}`)
   await response.wait()
 
@@ -96,8 +96,8 @@ const withdrawBIT = async () => {
 
 const main = async () => {
   await setup()
-  await depositBIT()
-  await withdrawBIT()
+  await depositMNT()
+  await withdrawMNT()
 }
 
 main().then(() => process.exit(0))
