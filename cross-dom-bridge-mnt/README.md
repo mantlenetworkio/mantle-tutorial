@@ -1,6 +1,6 @@
-# Bridging BIT with the Mantleio SDK
+# Bridging MNT with the Mantleio SDK
 
-This tutorial teaches you how to use the mantleio SDK to transfer BIT between Layer 1 and Layer 2.
+This tutorial teaches you how to use the mantleio SDK to transfer MNT between Layer 1 and Layer 2.
 
 ## Setup
 
@@ -8,6 +8,7 @@ This tutorial teaches you how to use the mantleio SDK to transfer BIT between La
    - [`git`](https://git-scm.com/downloads)
    - [`node`](https://nodejs.org/en/)
    - [`yarn`](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
+   - [`docker`](https://www.docker.com/products/docker-desktop/)
 
 1. Start local L1 and L2.
     ```sh
@@ -22,7 +23,7 @@ This tutorial teaches you how to use the mantleio SDK to transfer BIT between La
 
    ```sh
    git clone https://github.com/mantlenetworkio/mantle-tutorial.git
-   cd mantle-tutorial/cross-dom-bridge-bit
+   cd mantle-tutorial/cross-dom-bridge-mnt
    ```
 
 1. Install the necessary packages.
@@ -48,7 +49,7 @@ When running on L1, the output from the script should be similar to:
 
 ```sh
 Token on L1:2599100000000000000000     Token on L2:99990899999999999316126
-#################### Deposit BIT ####################
+#################### Deposit MNT ####################
 Token on L1:2599100000000000000000     Token on L2:99990899999999999316126
 Time so far 0.086 seconds
 Deposit transaction hash (on L1): 0xd6901a5a0bf51aa1750187cddc4cd95d6be14c7019c1a99fd472758e797407fc
@@ -57,7 +58,7 @@ Time so far 0.329 seconds
 Token on L1:2598100000000000000000     Token on L2:99991899999999999316126
 depositERC20 took 52.577 seconds
 
-#################### Withdraw BIT ####################
+#################### Withdraw MNT ####################
 Token on L1:2598100000000000000000     Token on L2:99991899999999999316126
 Transaction hash (on L2): 0x06a4548efdd5f967bdae5924cd76ea5783c2e53d67199beab76d4c23ad73c91b
 Waiting for status to change to IN_CHALLENGE_PERIOD
@@ -132,22 +133,22 @@ Create the CrossChainMessenger object that we use to transfer assets.
 
 ### `reportBalances`
 
-This function reports the BIT balances of the address on both layers.
+This function reports the MNT balances of the address on both layers.
 
 ```js
 const reportBalances = async () => {
-  const l1Balance = (await l1Bit.balanceOf(ourAddr)).toString()
-  const l2Balance = (await l2Bit.balanceOf(ourAddr)).toString()
+  const l1Balance = (await l1Mnt.balanceOf(ourAddr)).toString()
+  const l2Balance = (await l2Mnt.balanceOf(ourAddr)).toString()
   console.log(`Token on L1:${l1Balance}     Token on L2:${l2Balance}`)
 }
 ```
 
-### `depositBIT`
+### `depositMNT`
 
-This function shows how to deposit BIT from L1 to L2.
+This function shows how to deposit MNT from L1 to L2.
 
 ```js
-const depositBIT = async () => {
+const depositMNT = async () => {
   ...
 ```
 
@@ -155,7 +156,7 @@ const depositBIT = async () => {
   const start = new Date()
 
   const response = await crossChainMessenger.depositERC20(
-    l1BitAddr, l2BitAddr, depositToken)
+    l1MntAddr, l2MntAddr, depositToken)
 ```
 
 `crossChainMessenger.depositERC20()` creates and sends the deposit trasaction on L1.
@@ -178,21 +179,21 @@ To show that the deposit actually happened we need to wait until the message is 
 
 ```js
   await reportBalances()    
-  console.log(`depositBIT took ${(new Date()-start)/1000} seconds\n\n`)
+  console.log(`depositMNT took ${(new Date()-start)/1000} seconds\n\n`)
 }
 ```
 
 Once the message is relayed the balance change on L2 is practically instantaneous.
 We can just report the balances and see that the L2 balance rose by 1.
 
-### `withdrawBIT`
+### `withdrawMNT`
 
-This function shows how to withdraw BIT from L2 to L1.
+This function shows how to withdraw MNT from L2 to L1.
 
 ```js
-const withdrawBIT = async () => { 
+const withdrawMNT = async () => { 
   ...
-  const response = await crossChainMessenger.withdrawERC20(l1BitAddr, l2BitAddr, withdrawToken)
+  const response = await crossChainMessenger.withdrawERC20(l1MntAddr, l2MntAddr, withdrawToken)
   ...
 ```
 
@@ -242,8 +243,8 @@ A `main` to run the setup followed by both operations.
 const main = async () => {
   await setup()
   await reportBalances()
-  await depositBIT()
-  await withdrawBIT()
+  await depositMNT()
+  await withdrawMNT()
 }
 
 main().then(() => process.exit(0))
@@ -255,4 +256,4 @@ main().then(() => process.exit(0))
 
 ## Conclusion
 
-You should now be able to write applications that use our SDK and bridge to transfer BIT between layer 1 and layer 2. 
+You should now be able to write applications that use our SDK and bridge to transfer MNT between layer 1 and layer 2. 
