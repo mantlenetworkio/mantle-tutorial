@@ -1,4 +1,4 @@
-# Estimate the costs of an Mantle (L2) transaction
+# Estimate the costs of a Mantle (L2) transaction
 
 
 This tutorial teaches you how to use the Mantle SDK to estimate the gas costs of L2 transactions. 
@@ -301,7 +301,7 @@ There is no need for a special function to estimate the amount of L2 gas, the no
       const weiB4 = await signer.getBalance()
 ```
 
-Get the balance prior to the transaction, so we'll be able to see how much it really cost.
+Get the balance prior to the transaction, so we'll be able to see how much it really costs.
 
 ```js
       try {
