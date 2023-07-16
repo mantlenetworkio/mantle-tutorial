@@ -184,7 +184,6 @@ Get the amount of gas we expect to use to store the transaction on L1
 
 ### displayResults
 
-<details>
 
 ```js
 
@@ -224,7 +223,6 @@ Compare the L1 gas estimated with the L1 gas actually required.
 
 Compare the L2 gas estimates with the L2 gas actually required.
 
-</details>
 
 
 ### main
