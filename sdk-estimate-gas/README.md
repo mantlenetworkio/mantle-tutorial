@@ -81,7 +81,6 @@ In this section we go over the relevant parts of the script.
 
 ### Setup
 
-<details>
 
 ```js
 #! /usr/local/bin/node
@@ -136,7 +135,6 @@ const displayGas = x => x.toString().padStart(10, " ")
 Display a value (either wei or gas).
 To properly align these values for display, we first turn [them into strings](https://www.w3schools.com/jsref/jsref_tostring_number.asp) and then [add spaces to the start](https://www.javascripttutorial.net/es-next/pad-string/) until the total value is the right length (20 or 10 characters).
 
-</details>
 
 ### getSigner
 
