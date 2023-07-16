@@ -1,7 +1,7 @@
 # Bridging ERC-20 tokens with the Mantleio SDK
 
 This tutorial teaches you how to use the Mantlenetwork SDK to transfer ERC-20 tokens between Layer 1 and Layer 2 .
-While you *could* use [the bridge contracts](https://github.com/mantleio/mantle/blob/main/packages/contracts/contracts/L1/messaging/L1StandardBridge.sol) directly
+While you *could* use [the bridge contracts](https://github.com/mantlenetworkio/mantle/blob/main/packages/contracts/contracts/L1/messaging/L1StandardBridge.sol) directly
 
 
 ## Setup
@@ -10,11 +10,10 @@ While you *could* use [the bridge contracts](https://github.com/mantleio/mantle/
    - [`git`](https://git-scm.com/downloads)
    - [`node`](https://nodejs.org/en/)
    - [`yarn`](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
-
+   - [`docker`](https://www.docker.com/products/docker-desktop/)
 1. Start local L1 and L2.
     ```sh
-    git clone https://github.com/mantle
-  io/mantle.git
+    git clone https://github.com/mantlenetworkio/mantle.git
     cd mantle/ops
     make up
     # check status
@@ -24,8 +23,7 @@ While you *could* use [the bridge contracts](https://github.com/mantleio/mantle/
 1. Clone this repository and enter it.
 
    ```sh
-   git clone https://github.com/mantle
-  io/mantle-tutorial.git
+   git clone https://github.com/mantlenetworkio/mantle-tutorial.git
    cd mantle-tutorial/cross-dom-bridge-erc20
    ```
 
