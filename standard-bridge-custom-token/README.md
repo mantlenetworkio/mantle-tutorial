@@ -15,13 +15,13 @@ For the purpose we import the `L2StandardERC20` from the `@mantleio/contracts` p
 
 You can import `@mantleio/contracts` to use the Mantle contracts within your own codebase. Install via `npm` or `yarn`:
 
-```
+```sh
 npm install @mantleio/contracts
 ```
 
 Within your contracts:
 
-```
+```javascript
 import { L2StandardERC20 } from "@mantleio/contracts/contracts/standards/L2StandardERC20.sol";
 ```
 
@@ -29,7 +29,7 @@ import { L2StandardERC20 } from "@mantleio/contracts/contracts/standards/L2Stand
 
 1. Download the necessary packages.
 
-   ```
+   ```sh
    yarn
    ```
 
@@ -37,7 +37,7 @@ import { L2StandardERC20 } from "@mantleio/contracts/contracts/standards/L2Stand
 
 2. Copy `.env.example` to `.env`.
 
-   ```
+   ```sh
    cp .env.example .env
    ```
 
@@ -52,7 +52,7 @@ import { L2StandardERC20 } from "@mantleio/contracts/contracts/standards/L2Stand
 
 4. Open the hardhat console.
 
-   ```
+   ```sh
    yarn hardhat console --network mantle-network
    ```
 
@@ -60,7 +60,7 @@ import { L2StandardERC20 } from "@mantleio/contracts/contracts/standards/L2Stand
 
 5. Deploy the contract.
 
-   ```
+   ```javascript
    l2CustomERC20Factory = await ethers.getContractFactory("L2CustomERC20")   
    l2CustomERC20 = await l2CustomERC20Factory.deploy(
       "0x4200000000000000000000000000000000000010",
@@ -73,7 +73,7 @@ import { L2StandardERC20 } from "@mantleio/contracts/contracts/standards/L2Stand
 
 1. Get the token addresses.
 
-   ```
+   ```javascript
    l1Addr = process.env.L1_TOKEN_ADDRESS
    l2Addr = l2CustomERC20.address
    ```
@@ -84,7 +84,7 @@ import { L2StandardERC20 } from "@mantleio/contracts/contracts/standards/L2Stand
 
 1. Get the L1 wallet.
 
-   ```
+   ```javascript
    l1Url = `https://eth-goerli.g.alchemy.com/v2/${process.env.L1_ALCHEMY_KEY}`
    l1RpcProvider = new ethers.providers.JsonRpcProvider(l1Url)
    hdNode = ethers.utils.HDNode.fromMnemonic(process.env.MNEMONIC)
@@ -105,7 +105,7 @@ import { L2StandardERC20 } from "@mantleio/contracts/contracts/standards/L2Stand
 
 3. Get tokens on L1 (and verify the balance)
 
-   ```
+   ```javascript
    tx = await l1Contract.faucet()
    rcpt = await tx.wait()
    await l1Contract.balanceOf(l1Wallet.address)
@@ -119,7 +119,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
 1. Import the Mantle SDK.
 
-   ```
+   ```javascript
    const mantleSDK = require("@mantleio/sdk")
    ```
 
@@ -127,7 +127,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
 2. Create the cross domain messenger.
 
-   ```
+   ```javascript
    l1ChainId = (await l1RpcProvider.getNetwork()).chainId
    l2ChainId = (await ethers.provider.getNetwork()).chainId
    l2Wallet = await ethers.provider.getSigner()
@@ -145,7 +145,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
 1. Give the L2 bridge an allowance to use the user's token. The L2 address is necessary to know which bridge is responsible and needs the allowance.
 
-   ```
+   ```javascript
    depositTx1 = await crossChainMessenger.approveERC20(l1Contract.address, l2Addr, 1e9)
    await depositTx1.wait()
    ```
@@ -154,7 +154,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
 2. Check your balances on L1 and L2.
 
-   ```
+   ```javascript
    await l1Contract.balanceOf(l1Wallet.address) 
    await l2CustomERC20.balanceOf(l1Wallet.address)
    ```
@@ -163,7 +163,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
 3. Do the actual deposit
 
-   ```
+   ```javascript
    depositTx2 = await crossChainMessenger.depositERC20(l1Contract.address, l2Addr, 1e9)
    await depositTx2.wait()
    ```
@@ -172,7 +172,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
 4. Wait for the deposit to be relayed.
 
-   ```
+   ```javascript
    await crossChainMessenger.waitForMessageStatus(depositTx2.hash, mantleSDK.MessageStatus.RELAYED)
    ```
 
@@ -180,7 +180,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
 5. Check your balances on L1 and L2.
 
-   ```
+   ```javascript
    await l1Contract.balanceOf(l1Wallet.address) 
    await l2CustomERC20.balanceOf(l1Wallet.address)
    ```
@@ -191,7 +191,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
 1. Initiate the withdrawal on L2
 
-   ```
+   ```javascript
    withdrawalTx1 = await crossChainMessenger.withdrawERC20(l1Contract.address, l2Addr, 1e9)
    await withdrawalTx1.wait()
    ```
@@ -200,7 +200,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
 2. Wait until the root state is published on L1, and then prove the withdrawal. This is likely to take less than 240 seconds.
 
-   ```
+   ```javascript
    await crossChainMessenger.waitForMessageStatus(withdrawalTx1.hash, mantleSDK.MessageStatus.READY_TO_PROVE)
    withdrawalTx2 = await crossChainMessenger.proveMessage(withdrawalTx1.hash)
    await withdrawalTx2.wait()
@@ -210,7 +210,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
 3. Wait the fault challenge period (a short period on Goerli, seven days on the production network) and then finish the withdrawal.
 
-   ```
+   ```javascript
    await crossChainMessenger.waitForMessageStatus(withdrawalTx1.hash, mantleSDK.MessageStatus.READY_FOR_RELAY)
    withdrawalTx3 = await crossChainMessenger.finalizeMessage(withdrawalTx1.hash)
    await withdrawalTx3.wait()   
@@ -220,7 +220,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
 4. Check your balances on L1 and L2. The balance on L2 should be back to zero.
 
-   ```
+   ```javascript
    await l1Contract.balanceOf(l1Wallet.address) 
    await l2CustomERC20.balanceOf(l1Wallet.address)
    ```
