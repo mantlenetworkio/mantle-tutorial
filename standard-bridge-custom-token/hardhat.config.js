@@ -18,7 +18,7 @@ module.exports = {
             accounts: { mnemonic: process.env.MNEMONIC }
         },
         'mantle-mainnet': {
-            chainId: 10,
+            chainId: 5000,
             url: `${process.env.MANTLE_MAINNET_RPC}`,
             accounts: { mnemonic: process.env.MNEMONIC }
         }

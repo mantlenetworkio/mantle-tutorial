@@ -2,7 +2,7 @@
  *Submitted for verification at Etherscan.io on 2022-08-19
 */
 
-pragma solidity 0.8.19;
+pragma solidity 0.8.18;
 // SPDX-License-Identifier: Unlicense
 
 // An ERC-20 token for testing purposes
@@ -514,4 +514,4 @@ contract MantleUselessToken is ERC20 {
         _mint(msg.sender, 1000_000_000_000_000_000_000);
     }   // function faucet
 
-}       // contract OptimismUselessToken
+}       // contract MantleUselessToken

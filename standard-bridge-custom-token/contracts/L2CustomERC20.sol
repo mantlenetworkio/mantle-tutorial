@@ -7,11 +7,7 @@ contract L2CustomERC20 is L2StandardERC20 {
       address _l2Bridge,
       address _l1Token
     )
-        L2StandardERC20(_l2Bridge, _l1Token, "Custom L2 Token", "L2T")
+        L2StandardERC20(_l2Bridge, _l1Token, "Custom L2 Token", "L2T",18)
         {
         }
-
-        function decimals() public pure override returns (uint8) {
-        return 8;
-    }
 }

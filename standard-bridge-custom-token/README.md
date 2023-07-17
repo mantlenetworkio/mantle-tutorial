@@ -22,7 +22,7 @@ npm install @mantleio/contracts
 Within your contracts:
 
 ```javascript
-import { L2StandardERC20 } from "@mantleio/contracts/contracts/standards/L2StandardERC20.sol";
+import { L2StandardERC20 } from "@mantleio/contracts/standards/L2StandardERC20.sol";
 ```
 
 ## Deploying the custom token
@@ -46,9 +46,9 @@ import { L2StandardERC20 } from "@mantleio/contracts/contracts/standards/L2Stand
 3. Edit `.env` to set the deployment parameters:
 
    - `MNEMONIC`, the mnemonic for an account that has enough ETH for the deployment.
-   - `L1_ALCHEMY_KEY`, the key for the alchemy application for a Goerli endpoint.
-   - `L2_ALCHEMY_KEY`, the key for the alchemy application for an Mantle Goerli endpoint.
-   - `L1_TOKEN_ADDRESS`, the address of the L1 ERC20 which you want to bridge. The default value, [`0x1093046259F62fc6dDEa6ba31E2F03Fd840082ec`](https://goerli.etherscan.io/address/0x1093046259F62fc6dDEa6ba31E2F03Fd840082ec) is a test ERC-20 contract on Goerli that lets you call `faucet` to give yourself test tokens.
+   - `MANTLE_TESTNET_RPC`, Mantle Testnet endpoint RPC URL.
+   - `MANTLE_MAINNET_RPC`, Mantle Mainnet endpoint RPC URL.
+   - `L1_TOKEN_ADDRESS`, the address of the L1 ERC20 which you want to bridge. The default value, [`0xeE7Bf96bFd25931976F45a16C4483d336169Bc0F`](https://goerli.etherscan.io/address/0xee7bf96bfd25931976f45a16c4483d336169bc0f) is a test ERC-20 contract on Goerli that lets you call `faucet` to give yourself test tokens.
 
 4. Open the hardhat console.
 
@@ -141,7 +141,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
    
 
-#### Deposit (from Goerli to Mantle Testnet, or Ethereum or Mantle Mainnet)
+#### Deposit (from Goerli to Mantle Testnet, or Ethereum to Mantle Mainnet)
 
 1. Give the L2 bridge an allowance to use the user's token. The L2 address is necessary to know which bridge is responsible and needs the allowance.
 
@@ -198,7 +198,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
    
 
-2. Wait until the root state is published on L1, and then prove the withdrawal. This is likely to take less than 240 seconds.
+2. Wait until the root state is published on L1, and then prove the withdrawal. This is likely to take within 30 minutes.
 
    ```javascript
    await crossChainMessenger.waitForMessageStatus(withdrawalTx1.hash, mantleSDK.MessageStatus.READY_TO_PROVE)
@@ -208,7 +208,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
    
 
-3. Wait the fault challenge period (a short period on Goerli, seven days on the production network) and then finish the withdrawal.
+3. Wait the fault challenge period (a short period on Goerli, currently 7 days(but may be adjusted in the future which can be checked here) on the production network) and then finish the withdrawal.
 
    ```javascript
    await crossChainMessenger.waitForMessageStatus(withdrawalTx1.hash, mantleSDK.MessageStatus.READY_FOR_RELAY)
