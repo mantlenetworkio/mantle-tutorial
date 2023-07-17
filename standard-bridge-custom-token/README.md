@@ -45,7 +45,7 @@ import { L2StandardERC20 } from "@mantleio/contracts/standards/L2StandardERC20.s
 
 3. Edit `.env` to set the deployment parameters:
 
-   - `MNEMONIC`, the mnemonic for an account that has enough ETH for the deployment.
+   - `PRIVATE_KEY`, the hex private key for an account that has enough ETH for the deployment.
    - `MANTLE_TESTNET_RPC`, Mantle Testnet endpoint RPC URL.
    - `MANTLE_MAINNET_RPC`, Mantle Mainnet endpoint RPC URL.
    - `L1_TOKEN_ADDRESS`, the address of the L1 ERC20 which you want to bridge. The default value, [`0xeE7Bf96bFd25931976F45a16C4483d336169Bc0F`](https://goerli.etherscan.io/address/0xee7bf96bfd25931976f45a16c4483d336169bc0f) is a test ERC-20 contract on Goerli that lets you call `faucet` to give yourself test tokens.
