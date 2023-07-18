@@ -88,8 +88,7 @@ import { L2StandardERC20 } from "@mantleio/contracts/standards/L2StandardERC20.s
 
    ```javascript
    l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
-   hdNode = ethers.utils.HDNode.fromMnemonic(process.env.MNEMONIC)
-   privateKey = hdNode.derivePath(ethers.utils.defaultPath).privateKey
+   const privateKey = process.env.PRIVATE_KEY
    l1Wallet = new ethers.Wallet(privateKey, l1RpcProvider)
    ```
 
