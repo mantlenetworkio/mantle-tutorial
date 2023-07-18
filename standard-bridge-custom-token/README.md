@@ -210,7 +210,7 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
    
 
-3. Wait the fault challenge period (a short period on Goerli, currently 7 days(but may be adjusted in the future which can be checked here) on the production network) and then finish the withdrawal.
+3. Wait the fault challenge period (a short period on Goerli, currently 7 days(but may be adjusted in the future which can be checked [here](https://etherscan.io/address/0x89E9D387555AF0cDE22cb98833Bae40d640AD7fa#readContract#F1)) on the production network) and then finish the withdrawal.
 
    ```javascript
    await crossChainMessenger.waitForMessageStatus(withdrawalTx1.hash, mantleSDK.MessageStatus.READY_FOR_RELAY)
