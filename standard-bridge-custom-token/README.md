@@ -46,8 +46,10 @@ import { L2StandardERC20 } from "@mantleio/contracts/standards/L2StandardERC20.s
 3. Edit `.env` to set the deployment parameters:
 
    - `PRIVATE_KEY`, the hex private key for an account that has enough ETH for the deployment.
-   - `MANTLE_TESTNET_RPC`, Mantle Testnet endpoint RPC URL.
-   - `MANTLE_MAINNET_RPC`, Mantle Mainnet endpoint RPC URL.
+   - `L1_RPC`, Ethereum endpoint RPC URL.
+   - `L2_RPC`, Mantle endpoint RPC URL.
+   - `L1_BRIDGE`, L1 standard bridge contract address.
+   - `L2_BRIDGE`, L2 standard bridge contract address.
    - `L1_TOKEN_ADDRESS`, the address of the L1 ERC20 which you want to bridge. The default value, [`0xeE7Bf96bFd25931976F45a16C4483d336169Bc0F`](https://goerli.etherscan.io/address/0xee7bf96bfd25931976f45a16c4483d336169bc0f) is a test ERC-20 contract on Goerli that lets you call `faucet` to give yourself test tokens.
 
 4. Open the hardhat console.
@@ -85,10 +87,8 @@ import { L2StandardERC20 } from "@mantleio/contracts/standards/L2StandardERC20.s
 1. Get the L1 wallet.
 
    ```javascript
-   l1Url = `https://eth-goerli.g.alchemy.com/v2/${process.env.L1_ALCHEMY_KEY}`
-   l1RpcProvider = new ethers.providers.JsonRpcProvider(l1Url)
-   hdNode = ethers.utils.HDNode.fromMnemonic(process.env.MNEMONIC)
-   privateKey = hdNode.derivePath(ethers.utils.defaultPath).privateKey
+   l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
+   const privateKey = process.env.PRIVATE_KEY
    l1Wallet = new ethers.Wallet(privateKey, l1RpcProvider)
    ```
 
@@ -208,7 +208,8 @@ Create and use [`CrossDomainMessenger`](https://sdk.mantle.xyz/classes/CrossChai
 
    
 
-3. Wait the fault challenge period (a short period on Goerli, currently 7 days(but may be adjusted in the future which can be checked here) on the production network) and then finish the withdrawal.
+
+3. Wait the fault challenge period (a short period on Goerli, currently 7 days(but may be adjusted in the future which can be checked [here](https://etherscan.io/address/0x89E9D387555AF0cDE22cb98833Bae40d640AD7fa#readContract#F1)) on the production network) and then finish the withdrawal.
 
    ```javascript
    await crossChainMessenger.waitForMessageStatus(withdrawalTx1.hash, mantleSDK.MessageStatus.READY_FOR_RELAY)
