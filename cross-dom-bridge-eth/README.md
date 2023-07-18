@@ -8,6 +8,7 @@ This tutorial teaches you how to use the Mantleio SDK to transfer ETH between La
    - [`git`](https://git-scm.com/downloads)
    - [`node`](https://nodejs.org/en/)
    - [`yarn`](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
+   - [`docker`](https://www.docker.com/products/docker-desktop/)
 
 1. Start local L1 and L2.
     ```sh
