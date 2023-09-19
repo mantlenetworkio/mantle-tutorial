@@ -344,10 +344,10 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
-"@mantleio/contracts@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmmirror.com/@mantleio/contracts/-/contracts-0.1.0.tgz#710f372f6b4b25bc499d599d9b7f644978c3ffd4"
-  integrity sha512-X79+qigsX55T88Xb9hN53gk1TAO7C67Q8NDVYg3/a566itmze2yXpd4uR9Gl1xK9uTmm2x6A+cYrnTPY9g2SOg==
+"@mantleio/contracts@0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@mantleio/contracts/-/contracts-0.2.1.tgz#0a9810c28a63ae86e267bcced88ab07c13dce5fb"
+  integrity sha512-NqWUO8Vhu2OVA+pH+k761uWwssQmKsSBRA1vO9wrKUvlHsWN50DL/wrIDHZBksDwcjqOFGeIxWmt9QLwndhAjw==
   dependencies:
     "@ethersproject/abstract-provider" "^5.6.1"
     "@ethersproject/abstract-signer" "^5.6.2"
@@ -367,12 +367,12 @@
     chai "^4.3.4"
     ethers "^5.6.8"
 
-"@mantleio/sdk@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.npmmirror.com/@mantleio/sdk/-/sdk-0.1.4.tgz#cc2817fbbb9befe68ae7a52c0c40a29a87d47527"
-  integrity sha512-5j6ElA7+WZ7SAL54e2UzggaqtewGzB2Rs53BZY628eyiFWQVJikO58X9GCoi4c+osfhcF5+ok2TLy43jgoPRHQ==
+"@mantleio/sdk@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@mantleio/sdk/-/sdk-0.2.2.tgz#e3ed2f572246281e679e4873ddf2cafe7d6a1f8c"
+  integrity sha512-mmMGDG09GFpcWu/qPhJ18cU1N7m+qI7d5leykNoITw9Gwn70oGor9oDoH4ZtFfRe8W0XjP2jo0nGafS7FvOWJg==
   dependencies:
-    "@mantleio/contracts" "0.1.0"
+    "@mantleio/contracts" "0.2.1"
     "@mantleio/core-utils" "0.1.0"
     lodash "^4.17.21"
     merkletreejs "^0.2.27"
@@ -621,10 +621,10 @@ deep-extend@^0.6.0:
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.6.0.tgz#c4fa7c95404a17a9c3e8ca7e1537312b736330ac"
   integrity sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==
 
-dotenv@^16.0.1:
-  version "16.0.3"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.3.tgz#115aec42bac5053db3c456db30cc243a5a836a07"
-  integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
+dotenv@^16.0.0:
+  version "16.3.1"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.3.1.tgz#369034de7d7e5b120972693352a3bf112172cc3e"
+  integrity sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==
 
 duplexer3@^0.1.4:
   version "0.1.5"
