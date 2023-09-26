@@ -108,7 +108,7 @@ npx hardhat --network mantle run scripts/deploy.ts
 ```
 Compiled 1 Solidity file successfully
 Greeter 0x8619b3cc4E7B7c5f6A3b6E981CEAd29678C6d03B
-run: npx hardhat verify --network mantleTestnet 0x8619b3cc4E7B7c5f6A3b6E981CEAd29678C6d03B to verify.
+run: npx hardhat verify --network mantle 0x8619b3cc4E7B7c5f6A3b6E981CEAd29678C6d03B to verify.
 ```
 
 ### Verify Smart Contract
@@ -116,7 +116,7 @@ run: npx hardhat verify --network mantleTestnet 0x8619b3cc4E7B7c5f6A3b6E981CEAd2
 As shown in the expected output above, this starter kit provides a predefined command to verify your contracts, let's try it out:
 
 ```sh
-npx hardhat verify --network mantleTestnet 0x8619b3cc4E7B7c5f6A3b6E981CEAd29678C6d03B
+npx hardhat verify --network mantle 0x8619b3cc4E7B7c5f6A3b6E981CEAd29678C6d03B
 ```
 
 #### Expected Output
