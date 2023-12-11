@@ -1,41 +1,43 @@
 #! /usr/local/bin/node
 
-require('dotenv').config()
-const ethers = require("ethers")
+require("dotenv").config();
+const ethers = require("ethers");
 
-const L2StandardTokenFactoryArtifact = require(`./node_modules/@mantleio/contracts/artifacts/contracts/L2/messaging/L2StandardTokenFactory.sol/L2StandardTokenFactory.json`);
-const ERC20Artifact = require('./node_modules/@openzeppelin/contracts/build/contracts/ERC20.json')
+const L2StandardTokenFactoryArtifact = require(`@mantleio/contracts/artifacts/contracts/L2/messaging/L2StandardTokenFactory.sol/L2StandardTokenFactory.json`);
+const ERC20Artifact = require("@openzeppelin/contracts/build/contracts/ERC20.json");
 
-const factory__ERC20 = new ethers.ContractFactory(ERC20Artifact.abi, ERC20Artifact.bytecode)
+const factory__ERC20 = new ethers.ContractFactory(
+  ERC20Artifact.abi,
+  ERC20Artifact.bytecode
+);
 
-const key = process.env.PRIV_KEY
-const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
-const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
-const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
-const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
+const key = process.env.PRIV_KEY;
+const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC);
+const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC);
+const l1Wallet = new ethers.Wallet(key, l1RpcProvider);
+const l2Wallet = new ethers.Wallet(key, l2RpcProvider);
 
 async function main() {
-  console.log("#################### Deploy L1 ERC20 ####################")
-  console.log('Deploying L1 ERC20...')
-  const L1_ERC20 = await factory__ERC20.connect(l1Wallet).deploy(
-    'L1 ERC20 ExampleToken',
-    'L1EPT',
-  )
-  await L1_ERC20.deployTransaction.wait()
-  console.log("L1 ERC20 Contract ExampleToken Address: ", L1_ERC20.address)
+  console.log("#################### Deploy L1 ERC20 ####################");
+  console.log("Deploying L1 ERC20...");
+  const L1_ERC20 = await factory__ERC20
+    .connect(l1Wallet)
+    .deploy("L1 ERC20 ExampleToken", "L1EPT");
+  await L1_ERC20.deployTransaction.wait();
+  console.log("L1 ERC20 Contract ExampleToken Address: ", L1_ERC20.address);
 
-  const L1TokenAddress = L1_ERC20.address
-  const L2TokenName = "L2TOKEN"
-  const L2TokenSymbol = "L2TOKEN"
+  const L1TokenAddress = L1_ERC20.address;
+  const L2TokenName = "L2TOKEN";
+  const L2TokenSymbol = "L2TOKEN";
 
-  console.log("Creating instance of L2StandardERC20 on L2")
+  console.log("Creating instance of L2StandardERC20 on L2");
 
   // Instantiate the Standard token factory
   const l2StandardTokenFactory = new ethers.Contract(
     "0x4200000000000000000000000000000000000012",
     L2StandardTokenFactoryArtifact.abi,
     l2Wallet
-  )
+  );
 
   const tx = await l2StandardTokenFactory.createStandardL2Token(
     L1TokenAddress,
@@ -58,7 +60,7 @@ async function main() {
     ERC20Artifact.abi,
     l2Wallet
   );
-  const decimals = await erc20.decimals()
+  const decimals = await erc20.decimals();
 
   // Output a usable `data.json`:
   console.log(`
@@ -75,7 +77,7 @@ async function main() {
       }
     }
 }
-  `)
+  `);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -30,12 +30,13 @@ const setup = async () => {
     l2SignerOrProvider: l2Wallet,
   });
   l1Mnt = new ethers.Contract(l1MntAddr, L1TestERC20.abi, l1Wallet);
-  l2Mnt = new ethers.Contract(l2MntAddr, L1TestERC20.abi, l2Wallet);
 };
 
 const reportBalances = async () => {
   const l1Balance = (await l1Mnt.balanceOf(ourAddr)).toString().slice(0, -18);
-  const l2Balance = (await l2Mnt.balanceOf(ourAddr)).toString().slice(0, -18);
+  const l2Balance = (await crossChainMessenger.l2Signer.getBalance())
+    .toString()
+    .slice(0, -18);
   console.log(`Token on L1:${l1Balance}     Token on L2:${l2Balance}`);
 };
 
