@@ -86,7 +86,7 @@ All tutorials can run in local enviroment,you can build local network enviroment
    - [`node`](https://nodejs.org/en/)
    - [`yarn`](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
 
-1. Start local L1 and L2.
+1. Start local L1 and L2:
    ```sh
    git clone https://github.com/mantlenetworkio/mantle.git
    cd mantle/ops
