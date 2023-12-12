@@ -7,6 +7,24 @@ This readMe file serves as a one-stop library to find all the relevant tutorials
 All tutorials listed below are built either using Mantle SDK or supported third-party tools.
 </br>
 
+### Learning Platform
+
+- [**Hackquest x Mantle Devs Tutorial**](https://www.mantle.hackquest.io/)
+
+   <details>
+   <summary><code>Course Lists</code></summary>
+
+  - Mantle Concept - #1 Layer-2
+  - Mantle Concept - #2 Rollup
+  - Mantle Concept - #3 Modular Blockchain
+  - Mantle Concept - #4 Data Availability
+  - Mantle Concept - #5 Bridge
+  - Mantle Concept - #6 EVM
+  - Mantle Concept - #7 Gas
+  - Mantle Concept - #8 Finality
+
+   </details>
+
 ### Complete Guide
 
 - [Complete Testnet Onboarding Guide](https://www.mantle.xyz/blog/developers/onboarding-to-mantle-testnet-a-complete-guide)
