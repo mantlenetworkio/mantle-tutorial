@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "@mantleio/contracts": "^0.2.1"
+    "@mantleio/contracts": "^0.2.1",
+    "@ethan-bedrock/contracts": "^1.5.0",
+    "@ethan-bedrock/sdk": "^1.19.0"
   },
   "devDependencies": {
     "hardhat": "^2.17.0"

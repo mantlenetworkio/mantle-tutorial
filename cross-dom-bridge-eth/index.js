@@ -1,7 +1,7 @@
 #! /usr/local/bin/node
 require('dotenv').config()
 const ethers = require("ethers")
-const mantleSDK = require("@mantleio/sdk")
+const mantleSDK = require("@ethan-bedrock/sdk")
 
 const key = process.env.PRIV_KEY
 const l2ETH = process.env.L2_ETH
@@ -24,7 +24,7 @@ const setup = async () => {
 }
 
 const eth = BigInt(1e16)
-
+const doubleeth = BigInt(2*1e16)
 const erc20ABI = [
   {
     constant: true,
@@ -62,25 +62,31 @@ const withdrawETH = async () => {
   console.log("Withdraw ETH")
   const start = new Date()
   await reportBalances()
-
-  const response = await crossChainMessenger.withdrawERC20(ethers.constants.AddressZero, l2ETH, eth)
+  const approve = await crossChainMessenger.approveERC20(ethers.constants.AddressZero,l2ETH,doubleeth,{signer:l2Wallet,gasLimit:300000})
+  console.log(`Approve transaction hash (on L2): ${approve.hash}`)
+  const response = await crossChainMessenger.withdrawERC20(ethers.constants.AddressZero, l2ETH, eth,{gasLimit:300000})
   console.log(`Transaction hash (on L2): ${response.hash}`)
   await response.wait()
+  console.log("Waiting for status to be READY_TO_PROVE")
+  console.log(`Time so far ${(new Date()-start)/1000} seconds`)
+  await crossChainMessenger.waitForMessageStatus(response.hash,
+      mantleSDK.MessageStatus.READY_TO_PROVE)
+  console.log(`Time so far ${(new Date()-start)/1000} seconds`)
+  await crossChainMessenger.proveMessage(response.hash)
 
-  console.log("Waiting for status to change to IN_CHALLENGE_PERIOD")
-  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
-  await crossChainMessenger.waitForMessageStatus(response.hash, mantleSDK.MessageStatus.IN_CHALLENGE_PERIOD)
+
   console.log("In the challenge period, waiting for status READY_FOR_RELAY")
-  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
-  await crossChainMessenger.waitForMessageStatus(response.hash, mantleSDK.MessageStatus.READY_FOR_RELAY)
+  console.log(`Time so far ${(new Date()-start)/1000} seconds`)
+  await crossChainMessenger.waitForMessageStatus(response.hash,
+      mantleSDK.MessageStatus.READY_FOR_RELAY)
   console.log("Ready for relay, finalizing message now")
-  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
-  await crossChainMessenger.finalizeMessage(response)
+  console.log(`Time so far ${(new Date()-start)/1000} seconds`)
+  await crossChainMessenger.finalizeMessage(response.hash)
+
   console.log("Waiting for status to change to RELAYED")
-  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
-  await crossChainMessenger.waitForMessageStatus(response, mantleSDK.MessageStatus.RELAYED)
-  await reportBalances()
-  console.log(`withdrawETH took ${(new Date() - start) / 1000} seconds\n\n\n`)
+  console.log(`Time so far ${(new Date()-start)/1000} seconds`)
+  await crossChainMessenger.waitForMessageStatus(response,
+      mantleSDK.MessageStatus.RELAYED)
 }
 
 const main = async () => {

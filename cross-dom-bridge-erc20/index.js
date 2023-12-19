@@ -2,7 +2,7 @@
 
 require('dotenv').config()
 const ethers = require("ethers")
-const mantleSDK = require("@mantleio/sdk")
+const mantleSDK = require("@ethan-bedrock/sdk")
 const fs = require("fs")
 
 const L1TestERC20 = JSON.parse(fs.readFileSync("L1TestERC20.json"))
@@ -36,14 +36,17 @@ const setup = async () => {
   console.log("#################### Deploy ERC20 ####################")
   console.log('Deploying L1 ERC20...')
   const L1_ERC20 = await factory__L1_ERC20.connect(l1Wallet).deploy(
-    'L1 ERC20 ExampleToken',
-    'L1EPT',
+    'L1 TEST TOKEN',
+    'LTT',
+      {
+        gasLimit:2000000
+      }
   )
   await L1_ERC20.deployTransaction.wait()
   console.log("L1 ERC20 Contract ExampleToken Address: ", L1_ERC20.address)
 
   let amount = ethers.utils.parseEther("10")
-  await L1_ERC20.connect(l1Wallet).mint(l1Wallet.address, amount)
+  await L1_ERC20.connect(l1Wallet).mint( amount)
   balance = (await L1_ERC20.connect(l1Wallet).balanceOf(l1Wallet.address)).toString()
   console.log("mint to ", l1Wallet.address, balance, " success")
 
@@ -53,10 +56,10 @@ const setup = async () => {
 
   console.log('Deploying L2 ERC20...')
   const L2_ERC20 = await factory__L2_ERC20.connect(l2Wallet).deploy(
-    l2bridge,
     L1_ERC20.address,
-    'L2 ERC20 ExampleToken',
-    'L2EPT',
+      {
+        gasLimit:3500000
+      }
   )
   await L2_ERC20.deployTransaction.wait()
   console.log("L2 ERC20 Contract BVM_L2DepositedERC20 Address: ", L2_ERC20.address, "\n")
@@ -106,23 +109,26 @@ const withdrawERC20 = async () => {
   console.log(`Transaction hash (on L2): ${response.hash}`)
   await response.wait()
 
-  console.log("Waiting for status to change to IN_CHALLENGE_PERIOD")
-  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
+  console.log("Waiting for status to be READY_TO_PROVE")
+  console.log(`Time so far ${(new Date()-start)/1000} seconds`)
   await crossChainMessenger.waitForMessageStatus(response.hash,
-    mantleSDK.MessageStatus.IN_CHALLENGE_PERIOD)
+      mantleSDK.MessageStatus.READY_TO_PROVE)
+  console.log(`Time so far ${(new Date()-start)/1000} seconds`)
+  await crossChainMessenger.proveMessage(response.hash)
+
+
   console.log("In the challenge period, waiting for status READY_FOR_RELAY")
-  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
+  console.log(`Time so far ${(new Date()-start)/1000} seconds`)
   await crossChainMessenger.waitForMessageStatus(response.hash,
-    mantleSDK.MessageStatus.READY_FOR_RELAY)
+      mantleSDK.MessageStatus.READY_FOR_RELAY)
   console.log("Ready for relay, finalizing message now")
-  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
-  await crossChainMessenger.finalizeMessage(response)
+  console.log(`Time so far ${(new Date()-start)/1000} seconds`)
+  await crossChainMessenger.finalizeMessage(response.hash)
+
   console.log("Waiting for status to change to RELAYED")
-  console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
+  console.log(`Time so far ${(new Date()-start)/1000} seconds`)
   await crossChainMessenger.waitForMessageStatus(response,
-    mantleSDK.MessageStatus.RELAYED)
-  await reportERC20Balances()
-  console.log(`withdrawERC20 took ${(new Date() - start) / 1000} seconds\n\n\n`)
+      mantleSDK.MessageStatus.RELAYED)
 }
 
 const main = async () => {
