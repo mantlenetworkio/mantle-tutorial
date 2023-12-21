@@ -37,8 +37,8 @@ const erc20ABI = [
 
 const reportBalances = async () => {
   const l1Balance = (await crossChainMessenger.l1Signer.getBalance())
-  const ETH = new ethers.Contract(l2ETH, erc20ABI, l2Wallet)
-  const l2Balance = (await ETH.balanceOf(crossChainMessenger.l2Signer.getAddress()))
+  const BVM_ETH = new ethers.Contract(l2ETH, erc20ABI, l2Wallet)
+  const l2Balance = (await BVM_ETH.balanceOf(crossChainMessenger.l2Signer.getAddress()))
 
   console.log(`On L1:${l1Balance}     On L2:${l2Balance} `)
 }

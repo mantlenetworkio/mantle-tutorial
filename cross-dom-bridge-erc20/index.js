@@ -37,10 +37,7 @@ const setup = async () => {
   console.log('Deploying L1 ERC20...')
   const L1_ERC20 = await factory__L1_ERC20.connect(l1Wallet).deploy(
     'L1 TEST TOKEN',
-    'LTT',
-      {
-        gasLimit:2000000
-      }
+    'LTT'
   )
   await L1_ERC20.deployTransaction.wait()
   console.log("L1 ERC20 Contract ExampleToken Address: ", L1_ERC20.address)
@@ -57,9 +54,7 @@ const setup = async () => {
   console.log('Deploying L2 ERC20...')
   const L2_ERC20 = await factory__L2_ERC20.connect(l2Wallet).deploy(
     L1_ERC20.address,
-      {
-        gasLimit:3500000
-      }
+
   )
   await L2_ERC20.deployTransaction.wait()
   console.log("L2 ERC20 Contract BVM_L2DepositedERC20 Address: ", L2_ERC20.address, "\n")

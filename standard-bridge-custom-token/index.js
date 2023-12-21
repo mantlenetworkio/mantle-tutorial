@@ -2,19 +2,19 @@
 
 require('dotenv').config()
 const ethers = require("ethers")
-const mantleSDK = require("@mantleio/sdk")
+const mantleSDK = require("@ethan-bedrock/sdk")
 const fs = require("fs")
 
 //In Hardhat, when you compile your smart contracts, it generates a directory named "artifacts".
-const MantleUselessTokenAbi = JSON.parse(fs.readFileSync("./artifacts/contracts/MantleUselessToken.sol/MantleUselessToken.json", 'utf8')).abi
-const L2CustomERC20 = JSON.parse(fs.readFileSync("./artifacts/contracts/L2CustomERC20.sol/L2CustomERC20.json", 'utf8'))
+const MantleUselessTokenAbi = JSON.parse(fs.readFileSync("./MantleUselessToken.json", 'utf8')).abi
+const L2CustomERC20 = JSON.parse(fs.readFileSync("./L2CustomERC20.json", 'utf8'))
 
 const l2CustomERC20 = new ethers.ContractFactory(L2CustomERC20.abi, L2CustomERC20.bytecode)
 
 const l1bridge = process.env.L1_BRIDGE
 const l2bridge = process.env.L2_BRIDGE
-const key = process.env.PRIVATE_KEY
-const l1TokenAddress = process.env.L1_TOKEN_ADDRESS
+const key = process.env.PRIV_KEY
+const l1TokenAddress = process.env.L1_MNT
 
 const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
 const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
