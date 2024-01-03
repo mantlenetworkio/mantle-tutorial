@@ -18,8 +18,8 @@
     "typescript": "^4.6.4"
   },
   "scripts": {
-    "local": "cp ../.env.local .env && node index.js && rm .env",
-    "testnet": "cp ../.env.testnet .env && node index.js && rm .env",
+    "local": "cp ../.env.local.tmp .env && node index.js && rm .env",
+    "testnet": "cp ../.env.testnet.tmp .env && node index.js && rm .env",
     "script": "hardhat compile && node index.js"
   }
 }

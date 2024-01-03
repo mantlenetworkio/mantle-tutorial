@@ -1,4 +1,4 @@
-# Bridging MNT with the Mantleio SDK
+# Bridging MNT with the Mantle SDK
 
 This tutorial teaches you how to use the mantleio SDK to transfer MNT between Layer 1 and Layer 2.
 
@@ -11,7 +11,7 @@ This tutorial teaches you how to use the mantleio SDK to transfer MNT between La
    - [`yarn`](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
    - [`docker`](https://www.docker.com/products/docker-desktop/)
 
-1. Start local L1 and L2.
+2. Start L1 and L2 environments. Currently, we support the local environment or the testnet environment. If you want to deploy your own L1 and L2, please follow the instructions below.
    ```sh
    git clone https://github.com/mantlenetworkio/mantle-v2.git
    cd mantle/ops
@@ -19,14 +19,15 @@ This tutorial teaches you how to use the mantleio SDK to transfer MNT between La
    # check status
    make ps
    ```
-1. Clone this repository and enter it.
+   **We highly recommend using the testnet environment which can be applied [here](https://www.alchemy.com/).**
+3. Clone this repository and enter it.
 
    ```sh
    git clone https://github.com/mantlenetworkio/mantle-tutorial.git
    cd mantle-tutorial/cross-dom-bridge-mnt
    ```
 
-1. Install the necessary packages.
+4. Install the necessary packages.
 
    ```sh
    yarn
@@ -37,12 +38,12 @@ This tutorial teaches you how to use the mantleio SDK to transfer MNT between La
 The sample code is in `index.js`, execute it.
 This transaction should execute immediately after execution.
 
-### local
+### Node Environment
 
-If you want have test with `index.js`, you should configure the missing or changing environment variables in file `.env.local.tmp` and change the file name `.env.local.tmp` to `.env.local` then use `yarn local` to execute `index.js`. If you want have a test in our testnet network you should do the same for `.env.testnet.tmp` and then use `yarn testnet` to execute `index.js`.
+If you want to test by using your own nodes, you should configure the missing or changing environment variables in file `.env.local.tmp` then use `yarn local` to execute `index.js`. If you want to have a test in our testnet network you should do the same for `.env.testnet.tmp` and then use `yarn testnet` to execute `index.js`.
 
 ```sh
-  yarn local
+  yarn testnet
 ```
 
 ## How does it work?
@@ -65,20 +66,22 @@ In this tutorial, we initialize the required libraries:
 
 Next, the code defines some configuration parameters:
 
-```js
-const l1bridge = process.env.L1_BRIDGE;
-const l2bridge = process.env.L2_BRIDGE;
+```javascript
+const L1TestERC20 = JSON.parse(fs.readFileSync("TestERC20.json"));
+const l1MntAddr = process.env.L1_MNT;
+const l2MntAddr = process.env.L2_MNT;
 const key = process.env.PRIV_KEY;
 ```
 
-- `l1bridge` and `l2bridge`: Environment variables representing the addresses of the layer 1 (L1) and layer 2 (L2) bridges.
-
+- `L1TestERC20`: A JSON object representing the L1 Test ERC20 contract.
+- `l1MntAddr`: The address of the L1 MNT token.
+- `l2MntAddr`: The address of the L2 MNT token.
 - `key`: The private key retrieved from the environment variables.
 
 ```js
 // Global variable because we need them almost everywhere
 let crossChainMessenger;
-let addr; // Our address
+let ourAddr; // Our address
 ```
 
 - `crossChainMessenger`: A global variable initialized later in the `setup` function, representing the Mantle SDK's `CrossChainMessenger` object.
@@ -183,7 +186,7 @@ To show that the deposit actually happened we need to wait until the message is 
 
 ```js
 await reportBalances();
-console.log(`depositERC20 took ${(new Date() - start) / 1000} seconds\n`);
+console.log(`depositMNT took ${(new Date() - start) / 1000} seconds\n`);
 ```
 
 Once the message is relayed the balance change on L2 is practically instantaneous.
@@ -192,18 +195,7 @@ We can just report the balances and see that the L2 balance rose by 1.
 ### `withdrawMNT`
 
 This function shows how to withdraw MNT from L2 to L1.
-
-```js
-console.log("#################### Withdraw MNT ####################");
-const start = new Date();
-await reportBalances();
-
-const response = await crossChainMessenger.withdrawMNT(withdrawToken);
-console.log(`Transaction hash (on L2): ${response.hash}`);
-await response.wait();
-```
-
-For deposits it was enough to transfer 1 to show that the L2 balance increases.
+For deposits, it was enough to transfer 1 to show that the L2 balance increases.
 However, in the case of withdrawals the withdrawing account needs to be pay for finalizing the message, which costs more than that.
 
 ```js

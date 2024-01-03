@@ -43,7 +43,7 @@
     bufio "^1.0.7"
     chai "^4.3.4"
 
-"@ethan-bedrock/sdk@^1.19.0":
+"@ethan-bedrock/sdk@^1.16.0":
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/@ethan-bedrock/sdk/-/sdk-1.19.0.tgz#6786c6e1db511c97720def99a2f213c87aa60453"
   integrity sha512-zS5ugwpSwXtT5CTwIBP00NU38m09w6oLcyaVx/iT+Xh/6m34yI3hhN6vXsMQj32Qf0yIpu3c0ayxPgSKGRYxYw==

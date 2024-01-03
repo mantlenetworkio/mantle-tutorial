@@ -11,7 +11,7 @@ This tutorial guides you on using the Mantle SDK to transfer ETH between layer 1
    - [`yarn`](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
    - [`docker`](https://www.docker.com/products/docker-desktop/)
 
-2. Start local L1 and L2 environments.
+2. Start L1 and L2 environments. Currently, we support the local environment or the testnet environment. If you want to deploy your own L1 and L2, please follow the instructions below.
 
    ```sh
    git clone https://github.com/mantlenetworkio/mantle-v2.git
@@ -20,6 +20,8 @@ This tutorial guides you on using the Mantle SDK to transfer ETH between layer 1
    # check status
    make ps
    ```
+
+   **We highly recommend using the testnet environment which can be applied [here](https://www.alchemy.com/).**
 
 3. Clone this repository and navigate to it.
 
@@ -37,9 +39,9 @@ This tutorial guides you on using the Mantle SDK to transfer ETH between layer 1
 
 The sample code is in `index.js`; execute it. This transaction should execute immediately after execution.
 
-### Local Environment
+### Node Environment
 
-If you want to test with `index.js`, configure the missing or changing environment variables in the file `.env.local.tmp`. Change the file name to `.env.local`, then use `yarn local` to execute `index.js`. For testing in the testnet network, follow the same steps for `.env.testnet.tmp` and use `yarn testnet` to execute `index.js`.
+If you want to test by using your own nodes, you should configure the missing or changing environment variables in file `.env.local.tmp` then use `yarn local` to execute `index.js`. If you want to have a test in our testnet network you should do the same for `.env.testnet.tmp` and then use `yarn testnet` to execute `index.js`.
 
 ```sh
 yarn local

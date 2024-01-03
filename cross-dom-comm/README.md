@@ -1,28 +1,22 @@
 # Communication between contracts on L1 and L2
 
 This tutorial teaches you how to do interlayer communication.
-You will learn how run a contract on L1 that runs another contract on L2, and also how to run a contract on L2 that calls a contract on L1.
+You will learn how to run a contract on L1 that runs another contract on L2, and also how to run a contract on L2 that calls a contract on L1.
 
 ## Seeing it in action
 
-To show how this works we need to installed [a slightly modified version of HardHat's `Greeter.sol`](./contracts/Greeter.sol) on both L1 and L2.
+To show how this works we need to install [a slightly](./contracts/Greeter.sol) modified version of HardHat's `Greeter.sol`](./contracts/Greeter.sol) on both L1 and L2.
 
 ```js
-console.log('Deploying L1 Greeter...')
-  L1Greeter = await factory__Greeter.connect(l1Wallet).deploy(
-    'L1 hello',
-    L1CDM,
-  )
-  await L1Greeter.deployTransaction.wait()
-  console.log("L1 Greeter Contract Address: ", L1Greeter.address)
-  
-  console.log('Deploying L2 Greeter...')
-  L2Greeter = await factory__Greeter.connect(l2Wallet).deploy(
-    'L2 hello',
-    L2CDM,
-  )
-  await L1Greeter.deployTransaction.wait()
-  console.log("L2 Greeter Contract Address: ", L1Greeter.address)
+console.log("Deploying L1 Greeter...");
+L1Greeter = await factory__Greeter.connect(l1Wallet).deploy("L1 hello", L1CDM);
+await L1Greeter.deployTransaction.wait();
+console.log("L1 Greeter Contract Address: ", L1Greeter.address);
+
+console.log("Deploying L2 Greeter...");
+L2Greeter = await factory__Greeter.connect(l2Wallet).deploy("L2 hello", L2CDM);
+await L1Greeter.deployTransaction.wait();
+console.log("L2 Greeter Contract Address: ", L1Greeter.address);
 ```
 
 ### Hardhat
@@ -31,8 +25,8 @@ This is how you can see communication between domains work in hardhat.
 
 #### Setup
 
-This setup assumes you already have [Node.js](https://nodejs.org/en/) and [yarn](https://classic.yarnpkg.com/) installed on your system. 
-   
+This setup assumes you already have [Node.js](https://nodejs.org/en/) and [yarn](https://classic.yarnpkg.com/) installed on your system.
+
 1. Install the necessary packages.
 
    ```sh
@@ -44,65 +38,74 @@ This setup assumes you already have [Node.js](https://nodejs.org/en/) and [yarn]
 1. Connect the L1 and L2
 
    ```js
-   const l1RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L1_RPC)
-   const l2RpcProvider = new ethers.providers.JsonRpcProvider(process.env.L2_RPC)
-   const l1Wallet = new ethers.Wallet(key, l1RpcProvider)
-   const l2Wallet = new ethers.Wallet(key, l2RpcProvider)
+   const l1RpcProvider = new ethers.providers.JsonRpcProvider(
+     process.env.L1_RPC
+   );
+   const l2RpcProvider = new ethers.providers.JsonRpcProvider(
+     process.env.L2_RPC
+   );
+   const l1Wallet = new ethers.Wallet(key, l1RpcProvider);
+   const l2Wallet = new ethers.Wallet(key, l2RpcProvider);
    ```
 
 1. Deploy the greeter on L1 and L2:
-   ```js
-   L1Greeter = await factory__Greeter.connect(l1Wallet).deploy(
-    'L1 hello',
-    L1CDM,
-   )
-   await L1Greeter.deployTransaction.wait()
-   console.log("L1 Greeter Contract Address: ", L1Greeter.address)
-  
-   console.log('Deploying L2 Greeter...')
-   L2Greeter = await factory__Greeter.connect(l2Wallet).deploy(
-    'L2 hello',
-    L2CDM,
-   )
-   await L1Greeter.deployTransaction.wait()
-   console.log("L2 Greeter Contract Address: ", L1Greeter.address)
-   ```
 
+   ```js
+   L1Greeter = await factory__Greeter
+     .connect(l1Wallet)
+     .deploy("L1 hello", L1CDM);
+   await L1Greeter.deployTransaction.wait();
+   console.log("L1 Greeter Contract Address: ", L1Greeter.address);
+
+   console.log("Deploying L2 Greeter...");
+   L2Greeter = await factory__Greeter
+     .connect(l2Wallet)
+     .deploy("L2 hello", L2CDM);
+   await L1Greeter.deployTransaction.wait();
+   console.log("L2 Greeter Contract Address: ", L1Greeter.address);
+   ```
 
 1. Deploy the `FromL1_ControlL2Greeter` contract.
 
    ```js
-   console.log("#################### Deploy Control Greeter ####################")
-   console.log('Deploying L1 ControlL2Greeter...')
-   L1_ControlL2Greeter = await factory__FromL1_ControlL2Greeter.connect(l1Wallet).deploy(
-      L1CDM,
-      L2Greeter.address,
-   )
-   await L1_ControlL2Greeter.deployTransaction.wait()
-   console.log("L1_ControlL2Greeter Contract Address: ", L1_ControlL2Greeter.address)
-   ```   
+   console.log(
+     "#################### Deploy Control Greeter ####################"
+   );
+   console.log("Deploying L1 ControlL2Greeter...");
+   L1_ControlL2Greeter = await factory__FromL1_ControlL2Greeter
+     .connect(l1Wallet)
+     .deploy(L1CDM, L2Greeter.address);
+   await L1_ControlL2Greeter.deployTransaction.wait();
+   console.log(
+     "L1_ControlL2Greeter Contract Address: ",
+     L1_ControlL2Greeter.address
+   );
+   ```
 
 1. Make a note of the object.
 
    ```js
-   let L1Greeter,L2Greeter
-   let L1_ControlL2Greeter,L2_ControlL1Greeter
+   let L1Greeter, L2Greeter;
+   let L1_ControlL2Greeter, L2_ControlL1Greeter;
    ```
 
 1. Send msg to L2.
 
    ```js
-   console.log("#################### Send Msg L1 To L2 ####################")
-   await reportGreet()
-   let start = new Date()
-   let response = await L1_ControlL2Greeter.setGreeting("L1 say hi to L2")
-   console.log(`Transaction hash (on L1): ${response.hash}`)
-   await response.wait()
-   console.log("Waiting for status to change to RELAYED")
-   console.log(`Time so far ${(new Date() - start) / 1000} seconds`)
-   await crossChainMessenger.waitForMessageStatus(response.hash, mantleSDK.MessageStatus.RELAYED)
-   console.log("After")
-   await reportGreet()
+   console.log("#################### Send Msg L1 To L2 ####################");
+   await reportGreet();
+   let start = new Date();
+   let response = await L1_ControlL2Greeter.setGreeting("L1 say hi to L2");
+   console.log(`Transaction hash (on L1): ${response.hash}`);
+   await response.wait();
+   console.log("Waiting for status to change to RELAYED");
+   console.log(`Time so far ${(new Date() - start) / 1000} seconds`);
+   await crossChainMessenger.waitForMessageStatus(
+     response.hash,
+     mantleSDK.MessageStatus.RELAYED
+   );
+   console.log("After");
+   await reportGreet();
    ```
 
 #### L2 message to L1
@@ -112,50 +115,51 @@ This setup assumes you already have [Node.js](https://nodejs.org/en/) and [yarn]
 1. Deploy and call the `FromL2_ControlL1Greeter` contract.
 
    ```js
-   console.log('Deploying L2 ControlL1Greeter...')
-   L2_ControlL1Greeter = await factory__FromL2_ControlL1Greeter.connect(l2Wallet).deploy(
-      L2CDM,
-      L1Greeter.address,
-   )
-   await L2_ControlL1Greeter.deployTransaction.wait()
-   console.log("L2_ControlL1Greeter Contract Address: ", L2_ControlL1Greeter.address)
+   console.log("Deploying L2 ControlL1Greeter...");
+   L2_ControlL1Greeter = await factory__FromL2_ControlL1Greeter
+     .connect(l2Wallet)
+     .deploy(L2CDM, L1Greeter.address);
+   await L2_ControlL1Greeter.deployTransaction.wait();
+   console.log(
+     "L2_ControlL1Greeter Contract Address: ",
+     L2_ControlL1Greeter.address
+   );
    ```
 
 1. Make a note of the object of `FromL2_ControlL1Greeter`.
 
    ```js
-   let L2_ControlL1Greeter
+   let L2_ControlL1Greeter;
    ```
 
 1. Send msg to L1.
 
    ```js
-   response = await L2_ControlL1Greeter.setGreeting("L2 say hi to L1")
-   console.log(`Transaction hash (on L2): ${response.hash}`)
+   response = await L2_ControlL1Greeter.setGreeting("L2 say hi to L1");
+   console.log(`Transaction hash (on L2): ${response.hash}`);
    ```
-
 
 ### Receive the message
 
 In actual scene, the transactions from L2 to L1 are not accepted immediately, because we need to wait to make sure there are no successful challenges.In a local environment you don't have to worry,because the challenge period is 0.
-Once the fault challenge period is over, it is necessary to claim the transaction on L1. 
+Once the fault challenge period is over, it is necessary to claim the transaction on L1.
 
 1. Get the SDK (it is already in `node_modules`).
 
    ```js
-   sdk = require("@mantlenio/sdk")
+   sdk = require("@mantlenio/sdk");
    ```
 
 1. Configure a `CrossChainMessenger` object:
 
    ```js
-   addr = l1Wallet.address
+   addr = l1Wallet.address;
    crossChainMessenger = new mantleSDK.CrossChainMessenger({
-      l1ChainId: process.env.L1_CHAINID,
-      l2ChainId: process.env.L2_CHAINID,
-      l1SignerOrProvider: l1Wallet,
-      l2SignerOrProvider: l2Wallet
-   })
+     l1ChainId: process.env.L1_CHAINID,
+     l2ChainId: process.env.L2_CHAINID,
+     l1SignerOrProvider: l1Wallet,
+     l2SignerOrProvider: l2Wallet,
+   });
    ```
 
 1. Check the status of the transaction.
@@ -176,12 +180,11 @@ Once the fault challenge period is over, it is necessary to claim the transactio
    - `sdk.MessageStatus.READY_FOR_RELAY` (4): Ready to finalize the message.
      Go on to the next step.
 
-
 1. Finalize the message.
 
    ```js
-   tx = await crossChainMessenger.finalizeMessage(hash)
-   rcpt = await tx.wait()
+   tx = await crossChainMessenger.finalizeMessage(hash);
+   rcpt = await tx.wait();
    ```
 
 ## How it's done (in Solidity)
@@ -194,12 +197,11 @@ Except for addresses, the contract going the other direction, [`FromL2_ControlL1
 // This contracts runs on L1, and controls a Greeter on L2.
 pragma solidity ^0.8.0;
 
-import { ICrossDomainMessenger } from 
+import { ICrossDomainMessenger } from
     "mantlenio/contracts/libraries/bridge/ICrossDomainMessenger.sol";
 ```
 
 This line imports the interface to send messages, [`ICrossDomainMessenger.sol`](https://github.com/mantlenio/mantle/blob/main/packages/contracts/contracts/L1/messaging/IL1CrossDomainMessenger.sol).
-
 
 ```solidity
 contract FromL1_ControlL2Greeter {
@@ -216,7 +218,7 @@ contract FromL1_ControlL2Greeter {
     function setGreeting(string calldata _greeting) public {
 ```
 
-This function sets the new greeting. Note that the string is stored in `calldata`. 
+This function sets the new greeting. Note that the string is stored in `calldata`.
 This saves us some gas, because when we are called from an externally owned account or a different contract there no need to copy the input string to memory.
 The downside is that we cannot call `setGreeting` from within this contract, because contracts cannot modify their own calldata.
 
@@ -226,8 +228,8 @@ The downside is that we cannot call `setGreeting` from within this contract, bec
 
 This is where we'll store the message to send to L2.
 
-```solidity 
-        message = abi.encodeWithSignature("setGreeting(string)", 
+```solidity
+        message = abi.encodeWithSignature("setGreeting(string)",
             _greeting);
 ```
 
@@ -258,7 +260,7 @@ The way this works is that the cross domain messenger that calls the target cont
 ```solidity
   // Get the cross domain origin, if any
   function getXorig() private view returns (address) {
-    address cdmAddr = address(0);    
+    address cdmAddr = address(0);
 ```
 
 ```solidity

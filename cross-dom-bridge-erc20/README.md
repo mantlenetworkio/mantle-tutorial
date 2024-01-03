@@ -1,4 +1,4 @@
-# Bridging ERC-20 tokens with the Mantleio SDK
+# Bridging ERC-20 tokens with the Mantle SDK
 
 This tutorial teaches you how to use the Mantlenetwork SDK to transfer ERC-20 tokens between Layer 1 and Layer 2.
 While you _could_ use [the bridge contracts](https://github.com/mantlenetworkio/mantle-v2/blob/develop/packages/contracts/contracts/L1/messaging/L1StandardBridge.sol) directly
@@ -12,15 +12,17 @@ While you _could_ use [the bridge contracts](https://github.com/mantlenetworkio/
    - [`yarn`](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
    - [`docker`](https://www.docker.com/products/docker-desktop/)
 
-2. Start local L1 and L2.
+2. Start L1 and L2. Currently, we support the local environment or the testnet environment. If you want to deploy your own L1 and L2, please follow the instructions below.
 
    ```sh
-   git clone https://github.com/mantlenetworkio/mantle.git
+   git clone https://github.com/mantlenetworkio/mantle-v2.git
    cd mantle/ops
    make up
    # check status
    make ps
    ```
+
+   **We highly recommend using the testnet environment which can be applied [here](https://www.alchemy.com/).**
 
 3. Clone this repository and enter it.
 
@@ -40,12 +42,12 @@ While you _could_ use [the bridge contracts](https://github.com/mantlenetworkio/
 The sample code is in `index.js`, execute it.
 This transaction should execute immediately after execution.
 
-### local
+### Node Environment
 
-If you want have test with `index.js`, you should configure the missing or changing environment variables in file `.env.local.tmp` and change the file name `.env.local.tmp` to `.env.local` then use `yarn local` to execute `index.js`. If you want have a test in our testnet network you should do the same for `.env.testnet.tmp` and then use `yarn testnet` to execute `index.js`.
+If you want to test by using your own nodes, you should configure the missing or changing environment variables in file `.env.local.tmp` then use `yarn local` to execute `index.js`. If you want to have a test in our testnet network you should do the same for `.env.testnet.tmp` and then use `yarn testnet` to execute `index.js`.
 
 ```sh
-  yarn local
+  yarn testnet
 ```
 
 ## How does it work?
@@ -116,7 +118,7 @@ const l2Wallet = new ethers.Wallet(key, l2RpcProvider);
 
 ### `setup`
 
-This function sets up the parameters we need for transfers then deploy ERC20 on L1 and L2.
+This function sets up the parameters we need for transfers and then deploys ERC20 on L1 and L2.
 
 ```js
 ourAddr = l1Wallet.address;
@@ -206,7 +208,7 @@ This function shows how to deposit an ERC-20 token from L1 to L2.
 const oneToken = BigInt(1e18);
 ```
 
-`LTT` tokens are divided into $10^18$ basic units, same as ETH divided into wei.
+`LTT` tokens are divided into $10^18$ basic units, the same as ETH divided into wei.
 
 ```js
 console.log("#################### Deposit ERC20 ####################");
@@ -229,7 +231,7 @@ const allowanceResponse = await crossChainMessenger.approveERC20(
 To enable the bridge to transfer ERC-20 tokens, it needs to get an allowance first.
 The reason to use the SDK here is that it looks up the bridge address for us.
 While most ERC-20 tokens go through the standard bridge, a few require custom business logic that has to be written into the bridge itself.
-In those cases there is a custom bridge contract that needs to get the allowance.
+In those cases, there is a custom bridge contract that needs to get the allowance.
 
 ```js
 await allowanceResponse.wait();
@@ -247,7 +249,7 @@ const response = await crossChainMessenger.depositERC20(
 );
 ```
 
-[`crossChainMessenger.depositERC20()`](https://github.com/mantlenetworkio/mantle/blob/main/packages/sdk/src/cross-chain-messenger.ts#L986) creates and sends the deposit trasaction on L1.
+[`crossChainMessenger.depositERC20()`](https://github.com/mantlenetworkio/mantle/blob/main/packages/sdk/src/cross-chain-messenger.ts#L986) creates and sends the deposit transaction on L1.
 
 ```js
 console.log(`Deposit transaction hash (on L1): ${response.hash}`);
