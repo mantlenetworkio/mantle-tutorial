@@ -67,8 +67,8 @@ const setup = async () => {
   L2Greeter = await factory__Greeter
     .connect(l2Wallet)
     .deploy("L2 hello", L2CDM);
-  await L1Greeter.deployTransaction.wait();
-  console.log("L2 Greeter Contract Address: ", L1Greeter.address);
+  await L2Greeter.deployTransaction.wait();
+  console.log("L2 Greeter Contract Address: ", L2Greeter.address);
 
   console.log(
     "#################### Deploy Control Greeter ####################"
