@@ -2,59 +2,6 @@
 # yarn lockfile v1
 
 
-"@ethan-bedrock/contracts-bedrock@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@ethan-bedrock/contracts-bedrock/-/contracts-bedrock-1.5.0.tgz#a0ae7bf108c44788081e9f1429439cb98caa3d06"
-  integrity sha512-oC8afHKY7Wl4ykLy3FAgxgSXC8kMqdr9It78kWILlYWAtX6Pe4mVgHnI8CwZHIyutP6QTE/3J6xvSRvm6jj/KA==
-  dependencies:
-    "@ethan-bedrock/core-utils" "1.5.0"
-    "@openzeppelin/contracts" "4.7.3"
-    "@openzeppelin/contracts-upgradeable" "4.7.3"
-    ethers "^5.7.0"
-
-"@ethan-bedrock/contracts@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@ethan-bedrock/contracts/-/contracts-1.5.0.tgz#1a0f47472f190dd8997c68e7a82de25956677252"
-  integrity sha512-Aomh7V/W24oMDKchBToi7f8iWRrA0k4ZOFIccmdukNXAOMxpkaHlnEHy43/6B0dZzu4DyOrvB+mdPvGWp8DAyQ==
-  dependencies:
-    "@ethan-bedrock/core-utils" "1.5.0"
-    "@ethersproject/abstract-provider" "^5.7.0"
-    "@ethersproject/abstract-signer" "^5.7.0"
-
-"@ethan-bedrock/core-utils@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@ethan-bedrock/core-utils/-/core-utils-1.5.0.tgz#8c0a72ff38a0fe58271f599d3a0c32bb8764c693"
-  integrity sha512-C4SFJOHILDgdxAvCbmcyeYv1G/2dIykDovGMfjgUXd9Mx4CIsWmUFKLylpvmMeyDvmEEpP/1uydbDOBWGePsEg==
-  dependencies:
-    "@ethersproject/abi" "^5.7.0"
-    "@ethersproject/abstract-provider" "^5.7.0"
-    "@ethersproject/address" "^5.7.0"
-    "@ethersproject/bignumber" "^5.7.0"
-    "@ethersproject/bytes" "^5.7.0"
-    "@ethersproject/constants" "^5.7.0"
-    "@ethersproject/contracts" "^5.7.0"
-    "@ethersproject/hash" "^5.7.0"
-    "@ethersproject/keccak256" "^5.7.0"
-    "@ethersproject/properties" "^5.7.0"
-    "@ethersproject/providers" "^5.7.0"
-    "@ethersproject/rlp" "^5.7.0"
-    "@ethersproject/transactions" "^5.7.0"
-    "@ethersproject/web" "^5.7.0"
-    bufio "^1.0.7"
-    chai "^4.3.4"
-
-"@ethan-bedrock/sdk@^1.19.0":
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/@ethan-bedrock/sdk/-/sdk-1.19.0.tgz#6786c6e1db511c97720def99a2f213c87aa60453"
-  integrity sha512-zS5ugwpSwXtT5CTwIBP00NU38m09w6oLcyaVx/iT+Xh/6m34yI3hhN6vXsMQj32Qf0yIpu3c0ayxPgSKGRYxYw==
-  dependencies:
-    "@ethan-bedrock/contracts" "1.5.0"
-    "@ethan-bedrock/contracts-bedrock" "1.5.0"
-    "@ethan-bedrock/core-utils" "1.5.0"
-    lodash "^4.17.21"
-    merkletreejs "^0.2.27"
-    rlp "^2.2.7"
-
 "@ethersproject/abi@5.7.0", "@ethersproject/abi@^5.7.0":
   version "5.7.0"
   resolved "https://registry.npmmirror.com/@ethersproject/abi/-/abi-5.7.0.tgz"
@@ -396,6 +343,59 @@
     "@ethersproject/logger" "^5.7.0"
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
+
+"@mantleio/contracts-bedrock@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@mantleio/contracts-bedrock/-/contracts-bedrock-0.1.0.tgz#3fd41b4b1365398eb7d688f152251f192bdb63b2"
+  integrity sha512-tQ6ZANXUC91w0r36yg1GcchT++roUNg+wkTddKFFLIL/rN34q1Uw0I/01rMZ9KitwG6L+WaVuL9Z+5V9pUWKvQ==
+  dependencies:
+    "@mantleio/core-utils" "0.2.0"
+    "@openzeppelin/contracts" "4.7.3"
+    "@openzeppelin/contracts-upgradeable" "4.7.3"
+    ethers "^5.7.0"
+
+"@mantleio/contracts@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@mantleio/contracts/-/contracts-0.3.0.tgz#279811df828e3196a967e14a9bcc9d55f0d75407"
+  integrity sha512-KCWEQMaIVq2fC07Lnz2bzdG+thk+LTK3VJi2g6a386uGlmhJfgC5ctN/renili8rBh9ZB/MF77rwu1bORBX30Q==
+  dependencies:
+    "@ethersproject/abstract-provider" "^5.7.0"
+    "@ethersproject/abstract-signer" "^5.7.0"
+    "@mantleio/core-utils" "0.2.0"
+
+"@mantleio/core-utils@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@mantleio/core-utils/-/core-utils-0.2.0.tgz#bbd2b2bfad2520fea50b9ca5b7b0a06f59e56707"
+  integrity sha512-tYIt224jqJ2MpZGJTi/JrSYOW1C3l69jCqQ8x3FJXH+WQZbSalPIGdclzursJu0HTZpFSpYgOCeSwHB62KdWfw==
+  dependencies:
+    "@ethersproject/abi" "^5.7.0"
+    "@ethersproject/abstract-provider" "^5.7.0"
+    "@ethersproject/address" "^5.7.0"
+    "@ethersproject/bignumber" "^5.7.0"
+    "@ethersproject/bytes" "^5.7.0"
+    "@ethersproject/constants" "^5.7.0"
+    "@ethersproject/contracts" "^5.7.0"
+    "@ethersproject/hash" "^5.7.0"
+    "@ethersproject/keccak256" "^5.7.0"
+    "@ethersproject/properties" "^5.7.0"
+    "@ethersproject/providers" "^5.7.0"
+    "@ethersproject/rlp" "^5.7.0"
+    "@ethersproject/transactions" "^5.7.0"
+    "@ethersproject/web" "^5.7.0"
+    bufio "^1.0.7"
+    chai "^4.3.4"
+
+"@mantleio/sdk@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@mantleio/sdk/-/sdk-1.0.0.tgz#7e2a48cfdd9094dbe7c85aa079e3eb63a3dcd575"
+  integrity sha512-G81lpOLpf2kqRvckW6FV9g6krrzK7CoCHIrUAsMu4BntxuvbyJlMz8TnmmnaXdpHSIfyeOPuRRsccdTWlBSZdQ==
+  dependencies:
+    "@mantleio/contracts" "0.3.0"
+    "@mantleio/contracts-bedrock" "0.1.0"
+    "@mantleio/core-utils" "0.2.0"
+    lodash "^4.17.21"
+    merkletreejs "^0.2.27"
+    rlp "^2.2.7"
 
 "@openzeppelin/contracts-upgradeable@4.7.3":
   version "4.7.3"

@@ -1,7 +1,7 @@
 #! /usr/local/bin/node
 require("dotenv").config();
 const ethers = require("ethers");
-const mantleSDK = require("@ethan-bedrock/sdk");
+const mantleSDK = require("@mantleio/sdk");
 
 const key = process.env.PRIV_KEY;
 const l2ETH = process.env.L2_ETH;

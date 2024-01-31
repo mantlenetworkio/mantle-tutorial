@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@ethan-bedrock/sdk": "^1.19.0",
+    "@mantleio/sdk": "^1.0.0",
     "dotenv": "^16.0.0"
   },
   "scripts": {

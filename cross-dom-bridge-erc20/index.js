@@ -2,7 +2,7 @@
 
 require("dotenv").config();
 const ethers = require("ethers");
-const mantleSDK = require("@ethan-bedrock/sdk");
+const mantleSDK = require("@mantleio/sdk");
 const fs = require("fs");
 
 const L1TestERC20 = JSON.parse(fs.readFileSync("L1TestERC20.json"));
