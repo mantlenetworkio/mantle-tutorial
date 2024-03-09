@@ -1,36 +1,33 @@
 const ethers = require("ethers")
 const mantleSDK = require("@mantleio/sdk");
 
-async function estimateGasFee() {
-  const l2RpcProvider = new ethers.providers.JsonRpcProvider("https://rpc.mantle.xyz")    
+async function estimateGas() {
+    const l2RpcProvider = new ethers.providers.JsonRpcProvider("https://rpc.sepolia.mantle.xyz")    
 
-  try{
-    // Arbitrary tx object
+    try{
+
     const tx = {
-      to: '0x83165f86c10898dD4a7f33bDe8e5C0e4cC90E424',
-      value: ethers.utils.parseEther("0.1"), // Returns value in wei
+        from: '0xa6688d0dcad346ecc275cda98c91086fec3fe31c',
+        to: '0xe20c2cf90f1e4aa8abe20a6562c16b3601ad29bf', 
+        data: '0xde5f72fd'
     };
-
-    // By calling the BVM_GasPriceOracle contract method l1basefee()
-    const gasPrice = await mantleSDK.getL1GasPrice(l2RpcProvider);
-    const decimals = await mantleSDK.decimals(l2RpcProvider);
-    const scalar = await mantleSDK.scalar(l2RpcProvider);
-    const gasUsed = await mantleSDK.overhead(l2RpcProvider);
-
-    // L1RollupFee
-    const l1RollupFee = gasPrice.mul(gasUsed).mul(scalar).div(10**decimals)
     
-    // L2TxnFee
-    const l2Gas = await l2RpcProvider.estimateGas(tx)
-    const l2GasPrice = await l2RpcProvider.getGasPrice()
-    const l2TxnFee = l2GasPrice.mul(l2Gas);
-    
-    // Total estimated Gas Fee
-    const totalEstimatedGasFee = l1RollupFee.add(l2TxnFee);
-    console.log(`Total estimated Gas Fee: ${totalEstimatedGasFee.toString()}`);
-  } catch (error) {
-    console.error('Error estimating gas:', error);
-  }
+    const estimatedGas = await l2RpcProvider.estimateGas(tx);
+    console.log(`Estimated gas: ${estimatedGas.toString()}`);
+    const gasPrice = await l2RpcProvider.getGasPrice()
+    console.log(`Gas Price: ${gasPrice.toString()}`);
+    const totalCost = await mantleSDK.estimateTotalGasCost(l2RpcProvider,tx)
+    console.log(`Estimated totalCost for transaction: ${totalCost/1e18.toString()}`);
+
+    const l1cost = await mantleSDK.estimateL1GasCost(l2RpcProvider,tx)
+    console.log(`Estimated L1 Rollup Fee for transaction: ${l1cost/1e18.toString()}`);
+    const l2cost = await mantleSDK.estimateL2GasCost(l2RpcProvider,tx)
+    console.log(`Estimated L2 Fee for transaction: ${l2cost/1e18.toString()}`);
+
+    } catch (error) {
+        console.error('Error estimating gas:', error);
+    }
+
 }
 
-estimateGasFee();
+estimateGas();

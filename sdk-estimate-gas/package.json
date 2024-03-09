@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@mantleio/sdk": "^0.2.2",
+    "@mantleio/sdk": "1.0.0",
     "dotenv": "^16.0.0",
     "yarg": "^1.0.8"
   },

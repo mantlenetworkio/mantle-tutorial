@@ -54,6 +54,7 @@ const setup = async () => {
     l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet,
+    bedrock: true,
   });
   console.log("#################### Deploy Greeter ####################");
   console.log("Deploying L1 Greeter...");

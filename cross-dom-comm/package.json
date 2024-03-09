@@ -20,6 +20,6 @@
   "scripts": {
     "local": "cp ../.env.local.tmp .env && node index.js && rm .env",
     "testnet": "cp ../.env.testnet.tmp .env && node index.js && rm .env",
-    "script": "hardhat compile && node index.js"
+    "script": "npx hardhat compile && node index.js"
   }
 }

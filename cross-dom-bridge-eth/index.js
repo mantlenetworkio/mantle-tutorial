@@ -20,6 +20,7 @@ const setup = async () => {
     l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet,
+    bedrock: true
   });
   const l1Balance = await l1Wallet.getBalance();
   const l2Balance = await l2Wallet.getBalance();
