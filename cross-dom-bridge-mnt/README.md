@@ -19,7 +19,7 @@ This tutorial teaches you how to use the mantleio SDK to transfer MNT between La
    # check status
    make ps
    ```
-   **We highly recommend using the testnet environment which can be applied [here](https://www.alchemy.com/).**
+   **We highly recommend using the testnet environment, you can apply your own L1 RPC [here](https://www.alchemy.com/) and replace the L1 RPC URL in the `.env` file.**
 3. Clone this repository and enter it.
 
    ```sh
@@ -101,7 +101,7 @@ const l2Wallet = new ethers.Wallet(key, l2RpcProvider);
 
 ### `setup`
 
-This function sets up the parameters we need for transfers then deploy ERC20 on L1 and L2.
+This function sets up the parameters we need for transfers and then deploy ERC20 on L1 and L2.
 
 ```js
 const setup = async () => {
@@ -196,7 +196,7 @@ We can just report the balances and see that the L2 balance rose by 1.
 
 This function shows how to withdraw MNT from L2 to L1.
 For deposits, it was enough to transfer 1 to show that the L2 balance increases.
-However, in the case of withdrawals the withdrawing account needs to be pay for finalizing the message, which costs more than that.
+However, in the case of withdrawals the withdrawing account needs to be paid for finalizing the message, which costs more than that.
 
 ```js
 console.log("Waiting for status to be READY_TO_PROVE");

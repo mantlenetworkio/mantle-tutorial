@@ -22,7 +22,7 @@ While you _could_ use [the bridge contracts](https://github.com/mantlenetworkio/
    make ps
    ```
 
-   **We highly recommend using the testnet environment which can be applied [here](https://www.alchemy.com/).**
+   **We highly recommend using the testnet environment, you can apply your own L1 RPC [here](https://www.alchemy.com/) and replace the L1 RPC URL in the `.env` file.**
 
 3. Clone this repository and enter it.
 
@@ -127,6 +127,7 @@ crossChainMessenger = new mantleSDK.CrossChainMessenger({
   l2ChainId: process.env.L2_CHAINID,
   l1SignerOrProvider: l1Wallet,
   l2SignerOrProvider: l2Wallet,
+  bedrock: true,
 });
 ```
 
@@ -137,9 +138,7 @@ console.log("#################### Deploy ERC20 ####################");
 console.log("Deploying L1 ERC20...");
 const L1_ERC20 = await factory__L1_ERC20
   .connect(l1Wallet)
-  .deploy("L1 TEST TOKEN", "LTT", {
-    gasLimit: 2000000,
-  });
+  .deploy("L1 TEST TOKEN", "LTT");
 await L1_ERC20.deployTransaction.wait();
 console.log("L1 ERC20 Contract ExampleToken Address: ", L1_ERC20.address);
 ```
@@ -172,9 +171,7 @@ Approve the ERC-20 token on L1.
 console.log("Deploying L2 ERC20...");
 const L2_ERC20 = await factory__L2_ERC20
   .connect(l2Wallet)
-  .deploy(L1_ERC20.address, {
-    gasLimit: 3500000,
-  });
+  .deploy(L1_ERC20.address);
 await L2_ERC20.deployTransaction.wait();
 console.log(
   "L2 ERC20 Contract BVM_L2DepositedERC20 Address: ",

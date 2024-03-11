@@ -21,7 +21,7 @@ This tutorial guides you on using the Mantle SDK to transfer ETH between layer 1
    make ps
    ```
 
-   **We highly recommend using the testnet environment which can be applied [here](https://www.alchemy.com/).**
+   **We highly recommend using the testnet environment, you can apply your own L1 RPC [here](https://www.alchemy.com/) and replace the L1 RPC URL in the `.env` file.**
 
 3. Clone this repository and navigate to it.
 
@@ -109,7 +109,8 @@ const setup = async () => {
     l1ChainId: process.env.L1_CHAINID,
     l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
-    l2SignerOrProvider: l2Wallet
+    l2SignerOrProvider: l2Wallet,
+    bedrock: true,
   })
 }
 ......
@@ -203,7 +204,7 @@ const response = await crossChainMessenger.withdrawERC20(
 ```
 
 For deposits it was enough to transfer 1 to show that the L2 balance increases.
-However, in the case of withdrawals the withdrawing account needs to be pay for finalizing the message, which costs more than that.
+However, in the case of withdrawals the withdrawing account needs to be paid for finalizing the message, which costs more than that.
 
 ```js
 console.log(`Transaction hash (on L2): ${response.hash}`);

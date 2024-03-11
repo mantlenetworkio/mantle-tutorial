@@ -38,7 +38,7 @@ const setup = async () => {
     l2ChainId: process.env.L2_CHAINID,
     l1SignerOrProvider: l1Wallet,
     l2SignerOrProvider: l2Wallet,
-    bedrock: true
+    bedrock: true,
   });
   console.log("#################### Deploy ERC20 ####################");
   console.log("Deploying L1 ERC20...");
@@ -97,6 +97,7 @@ const depositERC20 = async () => {
     oneToken
   );
   await allowanceResponse.wait();
+  console.log(`Allowance given by tx ${allowanceResponse.hash}`);
   console.log(`Time so far ${(new Date() - start) / 1000} seconds`);
 
   const response = await crossChainMessenger.depositERC20(

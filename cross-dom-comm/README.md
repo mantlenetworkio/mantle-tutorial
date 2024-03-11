@@ -159,6 +159,7 @@ Once the fault challenge period is over, it is necessary to claim the transactio
      l2ChainId: process.env.L2_CHAINID,
      l1SignerOrProvider: l1Wallet,
      l2SignerOrProvider: l2Wallet,
+     bedrock: true,
    });
    ```
 
