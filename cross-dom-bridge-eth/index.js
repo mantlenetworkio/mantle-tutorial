@@ -104,6 +104,13 @@ const withdrawETH = async () => {
   console.log(`Time so far ${(new Date() - start) / 1000} seconds`);
   await crossChainMessenger.proveMessage(response.hash);
 
+  console.log("Waiting for status to change to IN_CHALLENGE_PERIOD");
+  console.log(`Time so far ${(new Date() - start) / 1000} seconds`);
+  await crossChainMessenger.waitForMessageStatus(
+    response.hash,
+    mantleSDK.MessageStatus.IN_CHALLENGE_PERIOD
+  );
+
   console.log("In the challenge period, waiting for status READY_FOR_RELAY");
   console.log(`Time so far ${(new Date() - start) / 1000} seconds`);
   await crossChainMessenger.waitForMessageStatus(
