@@ -135,6 +135,16 @@ const sendMsg = async () => {
   response = await L2_ControlL1Greeter.setGreeting("L2 say hi to L1");
   console.log(`Transaction hash (on L2): ${response.hash}`);
   await response.wait();
+
+  console.log("Waiting for status to be READY_TO_PROVE");
+  console.log(`Time so far ${(new Date() - start) / 1000} seconds`);
+  await crossChainMessenger.waitForMessageStatus(
+    response.hash,
+    mantleSDK.MessageStatus.READY_TO_PROVE
+  );
+  console.log(`Time so far ${(new Date() - start) / 1000} seconds`);
+  await crossChainMessenger.proveMessage(response.hash);
+  
   console.log("Waiting for status to change to IN_CHALLENGE_PERIOD");
   console.log(`Time so far ${(new Date() - start) / 1000} seconds`);
   await crossChainMessenger.waitForMessageStatus(
