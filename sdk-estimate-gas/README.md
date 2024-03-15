@@ -2,7 +2,7 @@
 
 
 This tutorial teaches you how to use the Mantle SDK to estimate the gas costs of L2 transactions. 
-This calculation is complicated by the fact that the major cost is the cost of writing the transaction on L1, it doesn't work to just multiply the gas used by the transaction by the gas price, the same way you would on L1. 
+It works to just multiply the gas used by the transaction by the gas price, the same way you would on L1. 
 [You can read the details of the calculation here](https://github.com/mantlenetworkio/mantle).
 
 
@@ -12,7 +12,7 @@ This calculation is complicated by the fact that the major cost is the cost of w
 [The node script](./gas.js) makes these assumptions:
 
 - You have [Node.js](https://nodejs.org/en/) running on your computer, as well as [yarn](https://classic.yarnpkg.com/lang/en/).
-- There is network connectivity to a provider on the Optimistic Goerli L2 network, and to the npm package registry.
+- There is network connectivity to a provider on the Mantle Sepolia L2 network, and to the npm package registry.
 
 
 ## Running the script
@@ -23,10 +23,10 @@ This calculation is complicated by the fact that the major cost is the cost of w
    yarn
    ```
 
-2. Use yarn to run the script
+2. Use node to run the script
 
    ```sh
-   yarn script
+   node gas.js
    ```
 
 ### Results
@@ -54,39 +54,34 @@ You can directly use the following JS code to estimate the total gas fees.
 const ethers = require("ethers")
 const mantleSDK = require("@mantleio/sdk");
 
-async function estimateGasFee() {
-  const l2RpcProvider = new ethers.providers.JsonRpcProvider("https://rpc.mantle.xyz")    
+async function estimateGas() {
+    const l2RpcProvider = new ethers.providers.JsonRpcProvider("https://rpc.sepolia.mantle.xyz")    
 
-  try{
-    // Arbitrary tx object
+    try{
+
+    const feeData = await l2RpcProvider.getFeeData();
+    console.log(`maxFeePerGas: ${feeData.maxFeePerGas}`);
+    console.log(`maxPriorityFeePerGas: ${feeData.maxPriorityFeePerGas}`);
+
     const tx = {
-      to: '0x0000000000000000000000000000000000000000',
-      value: ethers.utils.parseEther("0.1"), // Returns value in wei
+        from: '0xa6688d0dcad346ecc275cda98c91086fec3fe31c',
+        maxFeePerGas: feeData.maxFeePerGas,
+        maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
+        to: '0x96307f45900Bc6f396a512Dc89F8600D75f6f58C', 
+        data: '0xde5f72fd'
     };
-
-    // By calling the BVM_GasPriceOracle contract method l1basefee()
-    const gasPrice = await mantleSDK.getL1GasPrice(l2RpcProvider);
-    const decimals = await mantleSDK.decimals(l2RpcProvider);
-    const scalar = await mantleSDK.scalar(l2RpcProvider);
-    const gasUsed = await mantleSDK.overhead(l2RpcProvider);
-
-    // L1RollupFee
-    const l1RollupFee = gasPrice.mul(gasUsed).mul(scalar).div(10**decimals)
     
-    // L2TxnFee
-    const l2Gas = await l2RpcProvider.estimateGas(tx)
-    const l2GasPrice = await l2RpcProvider.getGasPrice()
-    const l2TxnFee = l2GasPrice.mul(l2Gas);
-    
-    // Total estimated Gas Fee
-    const totalEstimatedGasFee = l1RollupFee.add(l2TxnFee);
-    console.log(`Total estimated Gas Fee: ${totalEstimatedGasFee.toString()}`);
-  } catch (error) {
-    console.error('Error estimating gas:', error);
-  }
+    const estimatedGas = await l2RpcProvider.estimateGas(tx);
+    console.log(`Estimated gas: ${estimatedGas.toString()}`);
+    console.log(`Estimated totalCost for transaction: ${estimatedGas*feeData.maxFeePerGas/1e18.toString()}`);
+
+    } catch (error) {
+        console.error('Error estimating gas:', error);
+    }
+
 }
 
-estimateGasFee();
+estimateGas();
 ```
 
 

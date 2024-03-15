@@ -17,7 +17,7 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
-"@ethersproject/abstract-provider@5.7.0", "@ethersproject/abstract-provider@^5.6.1", "@ethersproject/abstract-provider@^5.7.0":
+"@ethersproject/abstract-provider@5.7.0", "@ethersproject/abstract-provider@^5.7.0":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/abstract-provider/-/abstract-provider-5.7.0.tgz#b0a8550f88b6bf9d51f90e4795d48294630cb9ef"
   integrity sha512-R41c9UkchKCpAqStMYUpdunjo3pkEvZC3FAwZn5S5MGbXoMQOHIdHItezTETxAO5bevtMApSyEhn9+CHcDsWBw==
@@ -30,7 +30,7 @@
     "@ethersproject/transactions" "^5.7.0"
     "@ethersproject/web" "^5.7.0"
 
-"@ethersproject/abstract-signer@5.7.0", "@ethersproject/abstract-signer@^5.6.2", "@ethersproject/abstract-signer@^5.7.0":
+"@ethersproject/abstract-signer@5.7.0", "@ethersproject/abstract-signer@^5.7.0":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/abstract-signer/-/abstract-signer-5.7.0.tgz#13f4f32117868452191a4649723cb086d2b596b2"
   integrity sha512-a16V8bq1/Cz+TGCkE2OPMTOUDLS3grCpdjoJCYNnVBbdYEMSgKrU0+B90s8b6H+ByYTBZN7a3g76jdIJi7UfKQ==
@@ -90,7 +90,7 @@
   dependencies:
     "@ethersproject/bignumber" "^5.7.0"
 
-"@ethersproject/contracts@5.7.0":
+"@ethersproject/contracts@5.7.0", "@ethersproject/contracts@^5.7.0":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/contracts/-/contracts-5.7.0.tgz#c305e775abd07e48aa590e1a877ed5c316f8bd1e"
   integrity sha512-5GJbzEU3X+d33CdfPhcyS+z8MzsTrBGk/sc+G+59+tPa9yFkl6HQ9D6L0QMgNTA9q8dT0XKxxkyp883XsQvbbg==
@@ -186,14 +186,14 @@
     "@ethersproject/bytes" "^5.7.0"
     "@ethersproject/sha2" "^5.7.0"
 
-"@ethersproject/properties@5.7.0", "@ethersproject/properties@^5.6.0", "@ethersproject/properties@^5.7.0":
+"@ethersproject/properties@5.7.0", "@ethersproject/properties@^5.7.0":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/properties/-/properties-5.7.0.tgz#a6e12cb0439b878aaf470f1902a176033067ed30"
   integrity sha512-J87jy8suntrAkIZtecpxEPxY//szqr1mlBaYlQ0r4RCaiD2hjheqF9s1LVE8vVuJCXisjIP+JgtK/Do54ej4Sw==
   dependencies:
     "@ethersproject/logger" "^5.7.0"
 
-"@ethersproject/providers@5.7.2", "@ethersproject/providers@^5.6.8":
+"@ethersproject/providers@5.7.2", "@ethersproject/providers@^5.7.0":
   version "5.7.2"
   resolved "https://registry.npmmirror.com/@ethersproject/providers/-/providers-5.7.2.tgz#f8b1a4f275d7ce58cf0a2eec222269a08beb18cb"
   integrity sha512-g34EWZ1WWAVgr4aptGlVBF8mhl3VWjv+8hoAnzStu8Ah22VHBsuGzP17eb6xDVRzw895G4W7vvx60lFFur/1Rg==
@@ -277,7 +277,7 @@
     "@ethersproject/constants" "^5.7.0"
     "@ethersproject/logger" "^5.7.0"
 
-"@ethersproject/transactions@5.7.0", "@ethersproject/transactions@^5.6.2", "@ethersproject/transactions@^5.7.0":
+"@ethersproject/transactions@5.7.0", "@ethersproject/transactions@^5.7.0":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/transactions/-/transactions-5.7.0.tgz#91318fc24063e057885a6af13fdb703e1f993d3b"
   integrity sha512-kmcNicCp1lp8qanMTC3RIikGgoJ80ztTyvtsFvCYpSCfkjhD0jZ2LOrnbcuxuToLIUYYf+4XwD1rP+B/erDIhQ==
@@ -322,7 +322,7 @@
     "@ethersproject/transactions" "^5.7.0"
     "@ethersproject/wordlists" "^5.7.0"
 
-"@ethersproject/web@5.7.1", "@ethersproject/web@^5.6.1", "@ethersproject/web@^5.7.0":
+"@ethersproject/web@5.7.1", "@ethersproject/web@^5.7.0":
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/@ethersproject/web/-/web-5.7.1.tgz#de1f285b373149bee5928f4eb7bcb87ee5fbb4ae"
   integrity sha512-Gueu8lSvyjBWL4cYsWsjh6MtMwM0+H4HvqFPZfB6dV8ctbP9zFAO73VG1cMWae0FLPCtz0peKPpZY8/ugJJX2w==
@@ -344,39 +344,68 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
-"@mantleio/contracts@0.1.0":
+"@mantleio/contracts-bedrock@0.1.0":
   version "0.1.0"
-  resolved "https://registry.npmmirror.com/@mantleio/contracts/-/contracts-0.1.0.tgz#710f372f6b4b25bc499d599d9b7f644978c3ffd4"
-  integrity sha512-X79+qigsX55T88Xb9hN53gk1TAO7C67Q8NDVYg3/a566itmze2yXpd4uR9Gl1xK9uTmm2x6A+cYrnTPY9g2SOg==
+  resolved "https://registry.yarnpkg.com/@mantleio/contracts-bedrock/-/contracts-bedrock-0.1.0.tgz#3fd41b4b1365398eb7d688f152251f192bdb63b2"
+  integrity sha512-tQ6ZANXUC91w0r36yg1GcchT++roUNg+wkTddKFFLIL/rN34q1Uw0I/01rMZ9KitwG6L+WaVuL9Z+5V9pUWKvQ==
   dependencies:
-    "@ethersproject/abstract-provider" "^5.6.1"
-    "@ethersproject/abstract-signer" "^5.6.2"
-    "@mantleio/core-utils" "0.1.0"
+    "@mantleio/core-utils" "0.2.0"
+    "@openzeppelin/contracts" "4.7.3"
+    "@openzeppelin/contracts-upgradeable" "4.7.3"
+    ethers "^5.7.0"
 
-"@mantleio/core-utils@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmmirror.com/@mantleio/core-utils/-/core-utils-0.1.0.tgz#8f6f93e930b364eddf201bfe9a5d648943e8b7f9"
-  integrity sha512-6v/CuKe8W3UVYVn6RUR6pbrMbKDcdrUoj24wCuwM4JFbPHzpTqUSnSXDHrDs3LJpWLxsptynNdIGw90wzCKpdg==
+"@mantleio/contracts@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@mantleio/contracts/-/contracts-0.3.0.tgz#279811df828e3196a967e14a9bcc9d55f0d75407"
+  integrity sha512-KCWEQMaIVq2fC07Lnz2bzdG+thk+LTK3VJi2g6a386uGlmhJfgC5ctN/renili8rBh9ZB/MF77rwu1bORBX30Q==
   dependencies:
-    "@ethersproject/abstract-provider" "^5.6.1"
-    "@ethersproject/properties" "^5.6.0"
-    "@ethersproject/providers" "^5.6.8"
-    "@ethersproject/transactions" "^5.6.2"
-    "@ethersproject/web" "^5.6.1"
+    "@ethersproject/abstract-provider" "^5.7.0"
+    "@ethersproject/abstract-signer" "^5.7.0"
+    "@mantleio/core-utils" "0.2.0"
+
+"@mantleio/core-utils@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@mantleio/core-utils/-/core-utils-0.2.0.tgz#bbd2b2bfad2520fea50b9ca5b7b0a06f59e56707"
+  integrity sha512-tYIt224jqJ2MpZGJTi/JrSYOW1C3l69jCqQ8x3FJXH+WQZbSalPIGdclzursJu0HTZpFSpYgOCeSwHB62KdWfw==
+  dependencies:
+    "@ethersproject/abi" "^5.7.0"
+    "@ethersproject/abstract-provider" "^5.7.0"
+    "@ethersproject/address" "^5.7.0"
+    "@ethersproject/bignumber" "^5.7.0"
+    "@ethersproject/bytes" "^5.7.0"
+    "@ethersproject/constants" "^5.7.0"
+    "@ethersproject/contracts" "^5.7.0"
+    "@ethersproject/hash" "^5.7.0"
+    "@ethersproject/keccak256" "^5.7.0"
+    "@ethersproject/properties" "^5.7.0"
+    "@ethersproject/providers" "^5.7.0"
+    "@ethersproject/rlp" "^5.7.0"
+    "@ethersproject/transactions" "^5.7.0"
+    "@ethersproject/web" "^5.7.0"
     bufio "^1.0.7"
     chai "^4.3.4"
-    ethers "^5.6.8"
 
-"@mantleio/sdk@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.npmmirror.com/@mantleio/sdk/-/sdk-0.1.4.tgz#cc2817fbbb9befe68ae7a52c0c40a29a87d47527"
-  integrity sha512-5j6ElA7+WZ7SAL54e2UzggaqtewGzB2Rs53BZY628eyiFWQVJikO58X9GCoi4c+osfhcF5+ok2TLy43jgoPRHQ==
+"@mantleio/sdk@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@mantleio/sdk/-/sdk-1.0.0.tgz#7e2a48cfdd9094dbe7c85aa079e3eb63a3dcd575"
+  integrity sha512-G81lpOLpf2kqRvckW6FV9g6krrzK7CoCHIrUAsMu4BntxuvbyJlMz8TnmmnaXdpHSIfyeOPuRRsccdTWlBSZdQ==
   dependencies:
-    "@mantleio/contracts" "0.1.0"
-    "@mantleio/core-utils" "0.1.0"
+    "@mantleio/contracts" "0.3.0"
+    "@mantleio/contracts-bedrock" "0.1.0"
+    "@mantleio/core-utils" "0.2.0"
     lodash "^4.17.21"
     merkletreejs "^0.2.27"
     rlp "^2.2.7"
+
+"@openzeppelin/contracts-upgradeable@4.7.3":
+  version "4.7.3"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.7.3.tgz#f1d606e2827d409053f3e908ba4eb8adb1dd6995"
+  integrity sha512-+wuegAMaLcZnLCJIvrVUDzA9z/Wp93f0Dla/4jJvIhijRrPabjQbZe6fWiECLaJyfn5ci9fqf9vTw3xpQOad2A==
+
+"@openzeppelin/contracts@4.7.3":
+  version "4.7.3"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.7.3.tgz#939534757a81f8d69cc854c7692805684ff3111e"
+  integrity sha512-dGRS0agJzu8ybo44pCIf3xBaPQN/65AIXNgK8+4gzKd5kbvlqyxryUYVLJv7fK98Seyd2hDZzVEHSWAh0Bt1Yw==
 
 "@types/bn.js@^5.1.0":
   version "5.1.1"
@@ -617,9 +646,9 @@ ethereumjs-util@^7.1.0:
     ethereum-cryptography "^0.1.3"
     rlp "^2.2.4"
 
-ethers@^5.6.8:
+ethers@^5.7.0:
   version "5.7.2"
-  resolved "https://registry.npmmirror.com/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
   integrity sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==
   dependencies:
     "@ethersproject/abi" "5.7.0"

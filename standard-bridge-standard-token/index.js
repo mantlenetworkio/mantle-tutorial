@@ -3,7 +3,7 @@
 require('dotenv').config()
 const ethers = require("ethers")
 
-const L2StandardTokenFactoryArtifact = require(`./node_modules/@mantleio/contracts/artifacts/contracts/L2/messaging/L2StandardTokenFactory.sol/L2StandardTokenFactory.json`);
+const L2StandardTokenFactoryArtifact = require(`./node_modules/@ethan-bedrock/contracts/artifacts/contracts/L2/messaging/L2StandardTokenFactory.sol/L2StandardTokenFactory.json`);
 const ERC20Artifact = require('./node_modules/@openzeppelin/contracts/build/contracts/ERC20.json')
 
 const factory__ERC20 = new ethers.ContractFactory(ERC20Artifact.abi, ERC20Artifact.bytecode)
@@ -20,7 +20,11 @@ async function main() {
   const L1_ERC20 = await factory__ERC20.connect(l1Wallet).deploy(
     'L1 ERC20 ExampleToken',
     'L1EPT',
+      {
+        gasLimit:3000000,
+      }
   )
+
   await L1_ERC20.deployTransaction.wait()
   console.log("L1 ERC20 Contract ExampleToken Address: ", L1_ERC20.address)
 
@@ -41,7 +45,7 @@ async function main() {
     L1TokenAddress,
     L2TokenName,
     L2TokenSymbol,
-    await L1_ERC20.decimals()
+    await L1_ERC20.decimals(),
   );
 
   const receipt = await tx.wait();

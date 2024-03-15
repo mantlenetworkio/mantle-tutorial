@@ -6,21 +6,19 @@ async function estimateGas() {
 
     try{
 
-    const feeData = await l2RpcProvider.getFeeData();
-    console.log(`maxFeePerGas: ${feeData.maxFeePerGas}`);
-    console.log(`maxPriorityFeePerGas: ${feeData.maxPriorityFeePerGas}`);
+    const gasPrice = await l2RpcProvider.getGasPrice()
+    console.log(`Gas Price: ${gasPrice.toString()}`);
 
     const tx = {
         from: '0xa6688d0dcad346ecc275cda98c91086fec3fe31c',
-        maxFeePerGas: feeData.maxFeePerGas,
-        maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
+        gasPrice: gasPrice,
         to: '0x96307f45900Bc6f396a512Dc89F8600D75f6f58C', 
         data: '0xde5f72fd'
     };
     
     const estimatedGas = await l2RpcProvider.estimateGas(tx);
     console.log(`Estimated gas: ${estimatedGas.toString()}`);
-    console.log(`Estimated totalCost for transaction: ${estimatedGas*feeData.maxFeePerGas/1e18.toString()}`);
+    console.log(`Estimated totalCost for legacy transaction: ${estimatedGas*gasPrice/1e18.toString()}`);
 
     } catch (error) {
         console.error('Error estimating gas:', error);

@@ -4,12 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@mantleio/sdk": "^0.1.4",
+    "@mantleio/sdk": "^1.0.0",
     "dotenv": "^16.0.0"
   },
   "scripts": {
-    "local": "cp ../.env.local .env && node index.js && rm .env",
-    "testnet": "cp ../.env.testnet .env && node index.js && rm .env",
+    "local": "cp ../.env.local.tmp .env && node index.js && rm .env",
+    "testnet": "cp ../.env.testnet.tmp .env && node index.js && rm .env",
     "script": "node index.js"
   }
 }

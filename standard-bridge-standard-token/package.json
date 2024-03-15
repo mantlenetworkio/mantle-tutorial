@@ -6,13 +6,13 @@
     "ethers": "^5.4.0"
   },
   "dependencies": {
-    "@mantleio/sdk": "^0.1.4",
+    "@ethan-bedrock/sdk": "^1.19.0",
     "dotenv": "^16.0.0",
     "@openzeppelin/contracts": "^4.7.3"
   },
   "scripts": {
-    "local": "cp ../.env.local .env && node index.js && rm .env",
-    "testnet": "cp ../.env.testnet .env && node index.js && rm .env",
+    "local": "cp ../.env.local.tmp .env && node index.js && rm .env",
+    "testnet": "cp ../.env.testnet.tmp .env && node index.js && rm .env",
     "script": "node index.js"
   }
 }
