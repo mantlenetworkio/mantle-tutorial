@@ -67,7 +67,10 @@ const setup = async () => {
 
   const tx = await OptimismMintableERC721Factory.connect(
     l2Wallet
-  ).createOptimismMintableERC721(L1_ERC721.address, tokenName, tokenSymbol);
+  ).createOptimismMintableERC721(L1_ERC721.address, tokenName, tokenSymbol,{
+    maxFeePerGas: ethers.utils.parseUnits('0.02', 'gwei'),
+    maxPriorityFeePerGas: ethers.utils.parseUnits('0', 'gwei')
+  });
   await tx.wait();
   console.log("depoly l2 erc721 tx hash", tx.hash);
   const receipt = await l2RpcProvider.getTransactionReceipt(tx.hash);
