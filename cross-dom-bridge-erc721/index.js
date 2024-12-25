@@ -2,7 +2,7 @@
 
 require("dotenv").config();
 const ethers = require("ethers");
-const mantleSDK = require("mantleiosdk4test"); // todo: need replace it with mantleSDK
+const mantleSDK = require("@mantleio/sdk"); // todo: need replace it with mantleSDK
 const fs = require("fs");
 
 const L1TestERC721 = JSON.parse(fs.readFileSync("L1TestERC721.json"));
@@ -70,7 +70,7 @@ const setup = async () => {
   ).createOptimismMintableERC721(L1_ERC721.address, tokenName, tokenSymbol,{
     maxFeePerGas: ethers.utils.parseUnits('0.02', 'gwei'),
     maxPriorityFeePerGas: ethers.utils.parseUnits('0', 'gwei')
-  });
+  }); 
   await tx.wait();
   console.log("depoly l2 erc721 tx hash", tx.hash);
   const receipt = await l2RpcProvider.getTransactionReceipt(tx.hash);

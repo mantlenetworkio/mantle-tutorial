@@ -385,10 +385,10 @@
     bufio "^1.0.7"
     chai "^4.3.4"
 
-"@mantleio/sdk@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@mantleio/sdk/-/sdk-1.0.0.tgz#7e2a48cfdd9094dbe7c85aa079e3eb63a3dcd575"
-  integrity sha512-G81lpOLpf2kqRvckW6FV9g6krrzK7CoCHIrUAsMu4BntxuvbyJlMz8TnmmnaXdpHSIfyeOPuRRsccdTWlBSZdQ==
+"@mantleio/sdk@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@mantleio/sdk/-/sdk-1.0.5.tgz#75dbfcd0020fc3c5e7e134d8c9a3425cd50301be"
+  integrity sha512-tbIyYrfSVGAvlR0Q2Dp7eGuICWrP7p3lXC0dvBka6DLxThR2ZvWsO3Lnbxwy3zJ1lgs1QDsNz0ImrvMvpQNJrA==
   dependencies:
     "@mantleio/contracts" "0.3.0"
     "@mantleio/contracts-bedrock" "0.1.0"
@@ -769,18 +769,6 @@ loupe@^2.3.1:
   integrity sha512-RaPMZKiMy8/JruncMU5Bt6na1eftNoo++R4Y+N2FrxkDVTrGvcyzFTsaGif4QTeKESheMGegbhw6iUAq+5A8zA==
   dependencies:
     get-func-name "^2.0.0"
-
-mantleiosdk4test@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/mantleiosdk4test/-/mantleiosdk4test-1.1.0.tgz#e5715b32d70355fdb208db86380f1578dea1db58"
-  integrity sha512-T6NkPBuq/73eXhpoufdHIV61GYi6KSRVW4o7FaHViO12JzhJiEtJ3vL5nZdGFQTgXr4s/toWjdJhTP6eV13jPg==
-  dependencies:
-    "@mantleio/contracts" "0.3.0"
-    "@mantleio/contracts-bedrock" "0.1.0"
-    "@mantleio/core-utils" "0.2.0"
-    lodash "^4.17.21"
-    merkletreejs "^0.2.27"
-    rlp "^2.2.7"
 
 md5.js@^1.3.4:
   version "1.3.5"

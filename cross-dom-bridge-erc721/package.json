@@ -4,10 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@mantleio/sdk": "^1.0.0",
+    "@mantleio/sdk": "^1.0.5",
     "@openzeppelin/contracts": "^4.7.3",
-    "dotenv": "^16.0.0",
-    "mantleiosdk4test": "^1.1.0"
+    "dotenv": "^16.0.0"
   },
   "scripts": {
     "local": "cp ../.env.local.tmp .env && node index.js && rm .env",
