@@ -186,7 +186,7 @@ const withdrawERC721 = async () => {
   console.log(`Time so far ${(new Date() - start) / 1000} seconds`);
   await crossChainMessenger.finalizeMessage(response.hash,{
     overrides: {
-      gasLimit: 470000,
+      gasLimit: 4700000,
     },
   });
   console.log(`Time so far ${(new Date() - start) / 1000} seconds`);
